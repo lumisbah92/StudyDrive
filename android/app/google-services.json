@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "558652912942",
+    "project_id": "studydrive-a97d1",
+    "storage_bucket": "studydrive-a97d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558652912942:android:c8f4b567f8858b847036bf",
+        "android_client_info": {
+          "package_name": "com.example.study_drive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558652912942-svtceeatoqcttcv61jgmmnlittt4o6fj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.study_drive",
+            "certificate_hash": "345d835b15aef5af81d04fb7b282408351741c39"
+          }
+        },
+        {
+          "client_id": "558652912942-76aoldvkc8hm4k9sqv2tsblvisk5ppcf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7ctX9rw4rDaVnjwx-1qgIlCpzApIv7jA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558652912942-76aoldvkc8hm4k9sqv2tsblvisk5ppcf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
