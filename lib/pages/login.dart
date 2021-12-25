@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_drive/pages/forgot_password.dart';
-import 'package:study_drive/pages/signup.dart';
+import 'package:study_drive/pages/Signup/signup.dart';
 import 'package:study_drive/pages/user/user_main.dart';
 
 class Login extends StatefulWidget {

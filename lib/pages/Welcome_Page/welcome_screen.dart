@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:study_drive/Welcome_Page/background.dart';
+import 'package:study_drive/pages/Welcome_Page/background.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/login.dart';
-import 'package:study_drive/pages/signup.dart';
+import 'package:study_drive/pages/Signup/signup.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -49,8 +49,8 @@ class WelcomeScreen extends StatelessWidget {
                           'Login',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
                         ),
                         style: ElevatedButton.styleFrom(
                           primary: kPrimaryColor,
@@ -86,8 +86,8 @@ class WelcomeScreen extends StatelessWidget {
                           'Sign Up',
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
                         ),
                         style: ElevatedButton.styleFrom(
                           primary: kPrimaryLightColor,

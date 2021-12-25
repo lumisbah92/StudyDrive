@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:study_drive/Welcome_Page/welcome_screen.dart';
+import 'package:study_drive/pages/Welcome_Page/welcome_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
