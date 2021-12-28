@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Signup/components/background.dart';
 import 'package:study_drive/pages/Signup/components/or_divider.dart';
 import 'package:study_drive/pages/Signup/components/social_icon.dart';
@@ -99,54 +100,229 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        body: Background(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "SIGNUP",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+      body: Form(
+        key: _formKey,
+        child: Container(
+          height: size.height,
+          width: double.infinity,
+          // Here i can use size.width but use double.infinity because both work as a same
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Positioned(
+                top: 0,
+                left: 0,
+                child: Image.asset(
+                  "assets/images/signup_top.png",
+                  width: size.width * 0.35,
                 ),
-                SizedBox(height: size.height * 0.03),
-                SvgPicture.asset(
-                  "assets/icons/signup.svg",
-                  height: size.height * 0.35,
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                child: Image.asset(
+                  "assets/images/main_bottom.png",
+                  width: size.width * 0.25,
                 ),
-                /*RoundedInputField(
-                  hintText: "Your Email",
-                  onChanged: (value) {},
-                ),
-                RoundedPasswordField(
-                  onChanged: (value) {},
-                ),
-                RoundedButton(
-                  text: "SIGNUP",
-                  press: () {},
-                ),*/
-                SizedBox(height: size.height * 0.03),
-                OrDivider(),
-                Row(
+              ),
+
+              SingleChildScrollView(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SocalIcon(
-                      iconSrc: "assets/icons/facebook.svg",
-                      press: () {},
+                    Text(
+                      "SIGNUP",
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SocalIcon(
-                      iconSrc: "assets/icons/twitter.svg",
-                      press: () {},
+                    SizedBox(height: size.height * 0.01),
+                    SvgPicture.asset(
+                      "assets/icons/signup.svg",
+                      height: size.height * 0.30,
                     ),
-                    SocalIcon(
-                      iconSrc: "assets/icons/google-plus.svg",
-                      press: () {},
+                    Container(
+                      // email field
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      width: size.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: kPrimaryLightColor,
+                        borderRadius: BorderRadius.circular(29),
+                      ),
+                      child: TextFormField(
+                        autofocus: false,
+                        cursorColor: kPrimaryColor,
+                        decoration: InputDecoration(
+                          icon: Icon(
+                            Icons.person,
+                            color: kPrimaryColor,
+                          ),
+                          hintText: 'Email: ',
+                          border: InputBorder.none,
+                          errorStyle:
+                          TextStyle(color: Colors.redAccent, fontSize: 15),
+                        ),
+                        controller: emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Enter Email';
+                          } else if (!value.contains('@')) {
+                            return 'Please Enter Valid Email';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
+                    Container(
+                      // password field
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      width: size.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: kPrimaryLightColor,
+                        borderRadius: BorderRadius.circular(29),
+                      ),
+                      child: TextFormField(
+                        autofocus: false,
+                        obscureText: true,
+                        cursorColor: kPrimaryColor,
+                        decoration: InputDecoration(
+                          hintText: "Password: ",
+                          icon: Icon(
+                            Icons.lock,
+                            color: kPrimaryColor,
+                          ),
+                          suffixIcon: Icon(
+                            Icons.visibility,
+                            color: kPrimaryColor,
+                          ),
+                          border: InputBorder.none,
+                          errorStyle:
+                          TextStyle(color: Colors.redAccent, fontSize: 15),
+                        ),
+                        controller: passwordController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Enter Password';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Container(
+                      // Confirm password field
+                      margin: EdgeInsets.only(top: 10, bottom: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      width: size.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: kPrimaryLightColor,
+                        borderRadius: BorderRadius.circular(29),
+                      ),
+                      child: TextFormField(
+                        autofocus: false,
+                        obscureText: true,
+                        cursorColor: kPrimaryColor,
+                        decoration: InputDecoration(
+                          hintText: "Confirm Password: ",
+                          icon: Icon(
+                            Icons.lock,
+                            color: kPrimaryColor,
+                          ),
+                          suffixIcon: Icon(
+                            Icons.visibility,
+                            color: kPrimaryColor,
+                          ),
+                          border: InputBorder.none,
+                          errorStyle:
+                          TextStyle(color: Colors.redAccent, fontSize: 15),
+                        ),
+                        controller: confirmPasswordController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Enter Password';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Container(
+                      // signup button
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              // Validate returns true if the form is valid, otherwise false.
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  email = emailController.text;
+                                  password = passwordController.text;
+                                  confirmPassword = confirmPasswordController.text;
+                                });
+                                registration();
+                              }
+                            },
+                            child: Text(
+                              'Sign Up',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Already have an Account? ",
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                          TextButton(
+                            onPressed: () => {
+                              Navigator.pushReplacement(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation1, animation2) =>
+                                      Login(),
+                                  transitionDuration: Duration(seconds: 0),
+                                ),
+                              )
+                            },
+                            child: Text(
+                              'Login',
+                              style: TextStyle(fontSize: 15.0),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.03),
+                    OrDivider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SocalIcon(
+                          iconSrc: "assets/icons/facebook.svg",
+                          press: () {},
+                        ),
+                        SocalIcon(
+                          iconSrc: "assets/icons/twitter.svg",
+                          press: () {},
+                        ),
+                        SocalIcon(
+                          iconSrc: "assets/icons/google-plus.svg",
+                          press: () {},
+                        ),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }
