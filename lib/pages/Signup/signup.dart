@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:study_drive/constants.dart';
-import 'package:study_drive/pages/Signup/components/background.dart';
 import 'package:study_drive/pages/Signup/components/or_divider.dart';
 import 'package:study_drive/pages/Signup/components/social_icon.dart';
 import 'package:study_drive/pages/login.dart';
