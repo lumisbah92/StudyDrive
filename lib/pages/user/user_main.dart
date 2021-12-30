@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:study_drive/pages/login.dart';
+import 'package:study_drive/pages/Login/login.dart';
 import 'package:study_drive/pages/user/change_password.dart';
 import 'package:study_drive/pages/user/dashboard.dart';
 import 'package:study_drive/pages/user/profile.dart';

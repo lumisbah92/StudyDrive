@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Signup/components/or_divider.dart';
 import 'package:study_drive/pages/Signup/components/social_icon.dart';
-import 'package:study_drive/pages/login.dart';
+import 'package:study_drive/pages/Login/login.dart';
 
 class Signup extends StatefulWidget {
   Signup({Key? key}) : super(key: key);
