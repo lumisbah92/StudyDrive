@@ -48,7 +48,11 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Change Password'),
+      ),
+      body: Form(
       key: _formKey,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
@@ -93,6 +97,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           ],
         ),
       ),
+    ),
     );
   }
 }

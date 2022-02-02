@@ -12,23 +12,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _initialization,
-        builder: (context, snapshot) {
-          // Check for Errors
-          if (snapshot.hasError) {
-            print("Something Went Wrong");
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return MaterialApp(
-            title: 'Flutter Firebase EMail Password Auth',
-            theme: ThemeData(
-              primarySwatch: Colors.deepPurple,
-            ),
-            debugShowCheckedModeBanner: false,
-            home: WelcomeScreen(),
-          );
-        });
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for Errors
+        if (snapshot.hasError) {
+          print("Something Went Wrong");
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return MaterialApp(
+          title: 'Study Drive',
+          theme: ThemeData(
+            primarySwatch: Colors.indigo,
+          ),
+          debugShowCheckedModeBanner: false,
+          home: WelcomeScreen(),
+        );
+      },
+    );
   }
 }

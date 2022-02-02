@@ -33,35 +33,41 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      child: Column(
-        children: [
-          Text(
-            'User ID: $uid',
-            style: TextStyle(fontSize: 18.0),
-          ),
-          Row(
-            children: [
-              Text(
-                'Email: $email',
-                style: TextStyle(fontSize: 18.0),
-              ),
-              user!.emailVerified
-                  ? Text(
-                      'verified',
-                      style: TextStyle(fontSize: 18.0, color: Colors.blueGrey),
-                    )
-                  : TextButton(
-                      onPressed: () => {verifyEmail()},
-                      child: Text('Verify Email'))
-            ],
-          ),
-          Text(
-            'Created: $creationTime',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        child: Column(
+          children: [
+            Text(
+              'User ID: $uid',
+              style: TextStyle(fontSize: 18.0),
+            ),
+            Row(
+              children: [
+                Text(
+                  'Email: $email',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+                user!.emailVerified
+                    ? Text(
+                        'verified',
+                        style:
+                            TextStyle(fontSize: 18.0, color: Colors.blueGrey),
+                      )
+                    : TextButton(
+                        onPressed: () => {verifyEmail()},
+                        child: Text('Verify Email'))
+              ],
+            ),
+            Text(
+              'Created: $creationTime',
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ],
+        ),
       ),
     );
   }

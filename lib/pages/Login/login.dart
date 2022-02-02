@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/forgot_password.dart';
 import 'package:study_drive/pages/Signup/signup.dart';
-import 'package:study_drive/pages/user/user_main.dart';
+import 'package:study_drive/pages/Navigation%20Drawer/page/dashboard.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ class _LoginState extends State<Login> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => UserMain(),
+          builder: (context) => Dashboard(),
         ),
       );
     } on FirebaseAuthException catch (e) {
