@@ -6,6 +6,7 @@ import 'package:study_drive/pages/Navigation Drawer/page/dashboard.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/profile.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/user_page.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/change_password.dart';
+import 'package:study_drive/pages/Navigation Drawer/page/Files/Department.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final padding = EdgeInsets.symmetric(horizontal: 20);
@@ -13,8 +14,7 @@ class NavigationDrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final name = 'Misbah';
     final email = 'misbah@gmail.com';
-    final urlImage =
-        'https://scontent.fzyl1-1.fna.fbcdn.net/v/t39.30808-6/272793287_992420055025417_8927796708175321196_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeGGDoGFNXYghrxkyNUv5A-N7FI1L-QAZb7sUjUv5ABlvgadJAcFuI4aFPMUPM-3AARRv4cHTadNcORBYO0Gj2re&_nc_ohc=tSaCM4q6pBsAX_q9xwH&_nc_ht=scontent.fzyl1-1.fna&oh=00_AT9qIMo79kBVG8_tb3uoVuRTiYGryjD_2kuAUFZmS4eHLQ&oe=62001B4D';
+    final urlImage = 'https://media-exp1.licdn.com/dms/image/C5603AQFTNHaWoz9-DQ/profile-displayphoto-shrink_800_800/0/1619187655949?e=1649894400&v=beta&t=I2xDAgh9KRP4ksVDxRcsPrRynF24Uj7rp0etI4yQbKs';
 
     return Drawer(
       child: Material(
@@ -65,8 +65,9 @@ class NavigationDrawerWidget extends StatelessWidget {
                   Divider(color: Colors.white70),
                   const SizedBox(height: 24),
                   buildMenuItem(
-                    text: 'Edit Profile',
-                    icon: Icons.edit,
+                    text: 'StudyDrive',
+                    icon: Icons.attach_file,
+                    onClicked: () => selectedItem(context, 4),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
@@ -187,6 +188,11 @@ class NavigationDrawerWidget extends StatelessWidget {
       case 3:
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ChangePassword(),
+        ));
+        break;
+      case 4:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Department(),
         ));
         break;
     }

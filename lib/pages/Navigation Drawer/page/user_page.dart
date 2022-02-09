@@ -17,6 +17,7 @@ class UserPage extends StatelessWidget {
           backgroundColor: kPrimaryColor,
           title: Text(name),
           centerTitle: true,
+
         ),
         body: Image.network(
           urlImage,
