@@ -27,7 +27,7 @@ class _DashboardState extends State<Dashboard> {
         selectedFontSize: 20,
         unselectedFontSize: 16,
         currentIndex: currentIndex,
-        showUnselectedLabels: false,
+        //showUnselectedLabels: false,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
