@@ -18,7 +18,7 @@ class _DepartmentState extends State<Department> {
         title: Text('Departments'),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.blue,
+        backgroundColor: kPrimaryColor,
         icon: Icon(Icons.add),
         label: Text("Add Department"),
         onPressed: () {
@@ -51,7 +51,7 @@ class _DepartmentState extends State<Department> {
                             cursorColor: kPrimaryColor,
                             decoration: InputDecoration(
                               icon: Icon(
-                                Icons.local_fire_department,
+                                Icons.school,
                                 color: kPrimaryColor,
                               ),
                               hintText: 'Department Name: ',
@@ -61,9 +61,7 @@ class _DepartmentState extends State<Department> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please Enter Email';
-                              } else if (!value.contains('@')) {
-                                return 'Please Enter Valid Email';
+                                return 'Please Enter Department name';
                               }
                               return null;
                             },

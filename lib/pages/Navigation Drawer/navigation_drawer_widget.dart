@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Login/login.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/dashboard.dart';
@@ -10,6 +11,7 @@ import 'package:study_drive/pages/Navigation Drawer/page/Files/Department.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final padding = EdgeInsets.symmetric(horizontal: 20);
+  final storage = new FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     final name = 'Misbah';
@@ -75,6 +77,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                     icon: Icons.logout,
                     onClicked: () async {
                       await FirebaseAuth.instance.signOut();
+                      await storage.delete(key: "uid");
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
