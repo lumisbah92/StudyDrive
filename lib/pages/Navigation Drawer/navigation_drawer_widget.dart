@@ -7,7 +7,7 @@ import 'package:study_drive/pages/Navigation Drawer/page/dashboard.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/profile.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/user_page.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/change_password.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/Department.dart';
+import 'package:study_drive/pages/Navigation Drawer/page/Files/Department/Department.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final padding = EdgeInsets.symmetric(horizontal: 20);

@@ -2,16 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
 
-class ListDepartmentPage extends StatefulWidget {
-  ListDepartmentPage({Key? key}) : super(key: key);
+class ListSemisterPage extends StatefulWidget {
+  ListSemisterPage({Key? key}) : super(key: key);
 
   @override
-  _ListDepartmentPageState createState() => _ListDepartmentPageState();
+  _ListSemisterPageState createState() => _ListSemisterPageState();
 }
 
-class _ListDepartmentPageState extends State<ListDepartmentPage> {
+class _ListSemisterPageState extends State<ListSemisterPage> {
   final Stream<QuerySnapshot> studentsStream =
-      FirebaseFirestore.instance.collection('Departments').snapshots();
+      FirebaseFirestore.instance.collection('Semisters').snapshots();
 
   /*// For Deleting User
   CollectionReference students =
@@ -56,7 +56,7 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                   Card(
                     child: ListTile(
                       title: Text(
-                        storedocs[i]['Department Name'],
+                        storedocs[i]['Semister Name'],
                         style: TextStyle(fontSize: 18.0),
                       ),
                       tileColor: kPrimaryLightColor,

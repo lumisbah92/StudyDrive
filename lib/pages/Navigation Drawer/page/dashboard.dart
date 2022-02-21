@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Navigation Drawer/navigation_drawer_widget.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/Department.dart';
+import 'package:study_drive/pages/Navigation%20Drawer/page/Files/Department/Department.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/profile.dart';
 
 class Dashboard extends StatefulWidget {

@@ -1,46 +1,45 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/list_department_page.dart';
+import 'package:study_drive/constants.dart';
+import 'package:study_drive/pages/Navigation Drawer/page/Files/Semister/list_semister_page.dart';
 
-import '../../../../constants.dart';
-
-class Department extends StatefulWidget {
-  Department({Key? key}) : super(key: key);
+class Semister extends StatefulWidget {
+  Semister({Key? key}) : super(key: key);
 
   @override
-  _DepartmentState createState() => _DepartmentState();
+  _SemisterState createState() => _SemisterState();
 }
 
-class _DepartmentState extends State<Department> {
+class _SemisterState extends State<Semister> {
   final _formKey = GlobalKey<FormState>();
-  var department = "";
+  var semister = "";
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
-  final departmentController = TextEditingController();
+  final semisterController = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    departmentController.dispose();
+    semisterController.dispose();
     super.dispose();
   }
 
   clearText() {
-    departmentController.clear();
+    semisterController.clear();
   }
 
   // Adding Student
   CollectionReference students =
-      FirebaseFirestore.instance.collection('Departments');
+      FirebaseFirestore.instance.collection('Semisters');
 
   Future<void> addUser() {
     return students
         .add({
-          'Department Name': department,
+          'Semister': semister,
         })
-        .then((value) => print('Department Added'))
-        .catchError((error) => print('Failed to Add Department: $error'));
+        .then((value) => print('Semister Added'))
+        .catchError((error) => print('Failed to Add Semister: $error'));
   }
 
   @override
@@ -48,12 +47,12 @@ class _DepartmentState extends State<Department> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Departments'),
+        title: Text('Semister'),
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: kPrimaryColor,
         icon: Icon(Icons.add),
-        label: Text("Add Department"),
+        label: Text("Add Semister"),
         onPressed: () {
           showDialog(
             context: context,
@@ -71,7 +70,7 @@ class _DepartmentState extends State<Department> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        // Department name field
+                        // Semister name field
                         margin: EdgeInsets.only(top: 10),
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 2),
@@ -88,15 +87,15 @@ class _DepartmentState extends State<Department> {
                               Icons.school,
                               color: kPrimaryColor,
                             ),
-                            hintText: 'Department Name: ',
+                            hintText: 'Semister: ',
                             border: InputBorder.none,
                             errorStyle: TextStyle(
                                 color: Colors.redAccent, fontSize: 15),
                           ),
-                          controller: departmentController,
+                          controller: semisterController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Department name';
+                              return 'Please Enter Semister name';
                             }
                             return null;
                           },
@@ -112,7 +111,7 @@ class _DepartmentState extends State<Department> {
                           if (_formKey.currentState!.validate()) {
                             setState(
                               () {
-                                department = departmentController.text;
+                                semister = semisterController.text;
                                 addUser();
                                 clearText();
                               },
@@ -128,7 +127,7 @@ class _DepartmentState extends State<Department> {
           );
         },
       ),
-      body: ListDepartmentPage(),
+      body: ListSemisterPage(),
     );
   }
 }
