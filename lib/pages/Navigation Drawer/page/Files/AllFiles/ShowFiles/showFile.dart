@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/ShowFiles/firebase_file.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/ShowFiles/firebase_api.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/ShowFiles/image_page.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/allFiles.dart';
 
 class showFiles extends StatefulWidget {
@@ -28,7 +32,7 @@ class _showFilesState extends State<showFiles> {
         ),
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: kPrimaryColor,
-          icon: Icon(Icons.add),
+          icon: Icon(Icons.cloud_upload_sharp),
           label: Text("Upload Files"),
           onPressed: () {
             Navigator.of(context).push(
@@ -73,26 +77,27 @@ class _showFilesState extends State<showFiles> {
         ),
       );
 
-  Widget buildFile(BuildContext context, FirebaseFile file) => ListTile(
-        leading: ClipOval(
-          child: Image.network(
-            file.url,
-            width: 52,
-            height: 52,
-            fit: BoxFit.cover,
+  Widget buildFile(BuildContext context, FirebaseFile file) => Padding(
+        padding: EdgeInsets.only(top: 5, left: 30,right: 30,),
+        child: Card(
+          child: ListTile(
+            title: Text(
+              file.name,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+                color: Colors.blue,
+              ),
+            ),
+            tileColor: kPrimaryLightColor,
+            onTap: () {
+              print(file.url);
+              openFile(
+                  url: file.url,
+              );
+            },
           ),
         ),
-        title: Text(
-          file.name,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            decoration: TextDecoration.underline,
-            color: Colors.blue,
-          ),
-        ),
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ImagePage(file: file),
-        )),
       );
 
   Widget buildHeader(int length) => ListTile(
@@ -114,4 +119,38 @@ class _showFilesState extends State<showFiles> {
           ),
         ),
       );
+  Future openFile({required String url, String? fileName}) async {
+    final Name = fileName ?? url.split('/').last;
+    final name = Name.split('?').first;
+    print(name);
+    final file = await downloadFile(url, name);
+    if(file == null) return;
+
+    print('Path: ${file.path}');
+    OpenFile.open(file.path);
+  }
+
+  Future<File?> downloadFile(String url, String name) async {
+    final appStorage = await getApplicationDocumentsDirectory();
+    final file = File('${appStorage.path}/$name');
+
+    try {
+      final response = await Dio().get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          receiveTimeout: 0,
+        ),
+      );
+
+      final raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(response.data);
+      await raf.close();
+
+      return file;
+    } catch (e) {
+      return null;
+    }
+  }
 }
