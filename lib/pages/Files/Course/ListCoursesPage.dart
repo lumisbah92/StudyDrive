@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/ShowFiles/showFile.dart';
+import 'package:study_drive/pages/Files/AllFiles/ShowFiles/showFile.dart';
 
 class ListCoursesPage extends StatefulWidget {
   ListCoursesPage({Key? key}) : super(key: key);

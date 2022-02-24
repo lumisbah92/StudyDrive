@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:study_drive/constants.dart';
-import 'package:study_drive/pages/Navigation%20Drawer/page/Files/Semister/semister.dart';
+import 'package:study_drive/pages/Files/Semister/semister.dart';
 
 class ListDepartmentPage extends StatefulWidget {
   ListDepartmentPage({Key? key}) : super(key: key);

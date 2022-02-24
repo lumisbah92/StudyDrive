@@ -1,46 +1,45 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/Department/list_department_page.dart';
+import 'package:study_drive/constants.dart';
+import 'package:study_drive/pages/Files/Course/ListCoursesPage.dart';
 
-import '../../../../../constants.dart';
-
-class Department extends StatefulWidget {
-  Department({Key? key}) : super(key: key);
+class Courses extends StatefulWidget {
+  Courses({Key? key}) : super(key: key);
 
   @override
-  _DepartmentState createState() => _DepartmentState();
+  _CoursesState createState() => _CoursesState();
 }
 
-class _DepartmentState extends State<Department> {
+class _CoursesState extends State<Courses> {
   final _formKey = GlobalKey<FormState>();
-  var department = "";
+  var course = "";
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
-  final departmentController = TextEditingController();
+  final courseController = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    departmentController.dispose();
+    courseController.dispose();
     super.dispose();
   }
 
   clearText() {
-    departmentController.clear();
+    courseController.clear();
   }
 
   // Adding Student
-  CollectionReference students =
-      FirebaseFirestore.instance.collection('Departments');
+  CollectionReference courses =
+  FirebaseFirestore.instance.collection('Courses');
 
   Future<void> addUser() {
-    return students
+    return courses
         .add({
-          'Department Name': department,
-        })
-        .then((value) => print('Department Added'))
-        .catchError((error) => print('Failed to Add Department: $error'));
+      'Course': course,
+    })
+        .then((value) => print('Course Added'))
+        .catchError((error) => print('Failed to Add Course: $error'));
   }
 
   @override
@@ -48,12 +47,12 @@ class _DepartmentState extends State<Department> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Departments'),
+        title: Text('Course'),
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: kPrimaryColor,
         icon: Icon(Icons.add),
-        label: Text("Add Department"),
+        label: Text("Add Course"),
         onPressed: () {
           showDialog(
             context: context,
@@ -71,10 +70,10 @@ class _DepartmentState extends State<Department> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        // Department name field
+                        // Course name field
                         margin: EdgeInsets.only(top: 10),
                         padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 2),
                         width: size.width * 0.8,
                         decoration: BoxDecoration(
                           color: kPrimaryLightColor,
@@ -88,15 +87,15 @@ class _DepartmentState extends State<Department> {
                               Icons.school,
                               color: kPrimaryColor,
                             ),
-                            hintText: 'Department Name: ',
+                            hintText: 'Course: ',
                             border: InputBorder.none,
                             errorStyle: TextStyle(
                                 color: Colors.redAccent, fontSize: 15),
                           ),
-                          controller: departmentController,
+                          controller: courseController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Department name';
+                              return 'Please Enter Course name';
                             }
                             return null;
                           },
@@ -111,8 +110,8 @@ class _DepartmentState extends State<Department> {
                           Navigator.of(context).pop;
                           if (_formKey.currentState!.validate()) {
                             setState(
-                              () {
-                                department = departmentController.text;
+                                  () {
+                                course = courseController.text;
                                 addUser();
                                 clearText();
                               },
@@ -128,15 +127,7 @@ class _DepartmentState extends State<Department> {
           );
         },
       ),
-      body: DecoratedBox(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/images/background_for_department.png"),
-              fit: BoxFit.cover,
-              ),
-        ),
-        child: ListDepartmentPage(),
-      ),
+      body: ListCoursesPage(),
     );
   }
 }

@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:study_drive/constants.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/ShowFiles/firebase_file.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/ShowFiles/firebase_api.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/allFiles.dart';
+import 'package:study_drive/pages/Files/AllFiles/ShowFiles/firebase_api.dart';
+import 'package:study_drive/pages/Files/AllFiles/ShowFiles/firebase_file.dart';
+import 'package:study_drive/pages/Files/AllFiles/allFiles.dart';
 
 class showFiles extends StatefulWidget {
   @override

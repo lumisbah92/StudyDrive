@@ -3,8 +3,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/firebase_api.dart';
-import 'package:study_drive/pages/Navigation%20Drawer/page/Files/AllFiles/ShowFiles/showFile.dart';
+import 'package:study_drive/pages/Files/AllFiles/ShowFiles/showFile.dart';
+import 'package:study_drive/pages/Files/AllFiles/firebase_api.dart';
 
 class allFilesPage extends StatefulWidget {
   @override

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:study_drive/constants.dart';
-import 'package:study_drive/pages/Navigation%20Drawer/page/Files/Course/courses.dart';
+import 'package:study_drive/pages/Files/Course/courses.dart';
 
 class Semister extends StatefulWidget {
   String department;

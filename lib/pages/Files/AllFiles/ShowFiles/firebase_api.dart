@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/ShowFiles/firebase_file.dart';
+import 'package:study_drive/pages/Files/AllFiles/ShowFiles/firebase_file.dart';
 
 class FirebaseApi {
   static Future<List<String>> _getDownloadLinks(List<Reference> refs) =>
