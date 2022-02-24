@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
+import 'package:study_drive/pages/Navigation Drawer/page/Files/AllFiles/ShowFiles/showFile.dart';
 
-class ListSemisterPage extends StatefulWidget {
-  ListSemisterPage({Key? key}) : super(key: key);
+class ListCoursesPage extends StatefulWidget {
+  ListCoursesPage({Key? key}) : super(key: key);
 
   @override
-  _ListSemisterPageState createState() => _ListSemisterPageState();
+  _ListCoursesPageState createState() => _ListCoursesPageState();
 }
 
-class _ListSemisterPageState extends State<ListSemisterPage> {
+class _ListCoursesPageState extends State<ListCoursesPage> {
   final Stream<QuerySnapshot> studentsStream =
-      FirebaseFirestore.instance.collection('Semisters').snapshots();
+      FirebaseFirestore.instance.collection('Courses').snapshots();
 
   /*// For Deleting User
   CollectionReference students =
@@ -56,17 +57,22 @@ class _ListSemisterPageState extends State<ListSemisterPage> {
                   Card(
                     child: ListTile(
                       title: Text(
-                        storedocs[i]['Semister Name'],
+                        storedocs[i]['Course'],
                         style: TextStyle(fontSize: 18.0),
                       ),
                       tileColor: kPrimaryLightColor,
                       leading: SizedBox(
                         width: 50,
                         height: 50,
-                        child: Image.network("https://media-exp1.licdn.com/dms/image/C5603AQFTNHaWoz9-DQ/profile-displayphoto-shrink_800_800/0/1619187655949?e=1649894400&v=beta&t=I2xDAgh9KRP4ksVDxRcsPrRynF24Uj7rp0etI4yQbKs"),
+                        child: Image.network(
+                            "https://media-exp1.licdn.com/dms/image/C5603AQFTNHaWoz9-DQ/profile-displayphoto-shrink_800_800/0/1619187655949?e=1649894400&v=beta&t=I2xDAgh9KRP4ksVDxRcsPrRynF24Uj7rp0etI4yQbKs"),
                       ),
-                      onTap: (){
-
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => showFiles(),
+                          ),
+                        );
                       },
                     ),
                   ),

@@ -78,11 +78,15 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                     physics: ScrollPhysics(),
                     crossAxisCount: 2,
                     itemCount: storedocs.length,
-                    staggeredTileBuilder: (int index) => StaggeredTile.extent(1, 100),
+                    staggeredTileBuilder: (int index) =>
+                        StaggeredTile.extent(1, 150),
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
-                    itemBuilder: (BuildContext context, int index) => Card(
-                        child: /*ListTile(
+                    itemBuilder: (BuildContext context, int index) {
+                      return new GestureDetector(
+                        child: Card(
+                          color: Colors.white70,
+                          /*child: ListTile(
                           title: Text(
                             storedocs[index]['Department Name'],
                             style: TextStyle(fontSize: 18.0),
@@ -102,24 +106,33 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                             );
                           },
                         ),*/
-                        Column(
-                          children: [
-                            SizedBox(
-                              width: 50,
-
-                              height: 50,
-                              child: Image.network(
-                                  "https://media-exp1.licdn.com/dms/image/C5603AQFTNHaWoz9-DQ/profile-displayphoto-shrink_800_800/0/1619187655949?e=1649894400&v=beta&t=I2xDAgh9KRP4ksVDxRcsPrRynF24Uj7rp0etI4yQbKs"),
+                          child: Column(
+                            children: [
+                              //Icon(Icons.edit),
+                              Ink.image(
+                                image: NetworkImage(
+                                  "https://media-exp1.licdn.com/dms/image/C5603AQFTNHaWoz9-DQ/profile-displayphoto-shrink_800_800/0/1619187655949?e=1649894400&v=beta&t=I2xDAgh9KRP4ksVDxRcsPrRynF24Uj7rp0etI4yQbKs",
+                                ),
+                                height: 100,
+                                fit: BoxFit.fill,
+                              ),
+                              Text(
+                                storedocs[index]['Department Name'],
+                                style: TextStyle(
+                                    fontSize: 18.0, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => Semister(department: storedocs[index]['Department Name'],),
                             ),
-                            Text(
-                              storedocs[index]['Department Name'],
-                              style: TextStyle(fontSize: 18.0),
-                            ),
-                          ],
-
-                        )
-
-                      ),
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ],
