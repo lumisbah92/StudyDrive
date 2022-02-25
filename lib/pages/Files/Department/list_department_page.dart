@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Files/Semister/semister.dart';
 
 class ListDepartmentPage extends StatefulWidget {
@@ -54,84 +55,48 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
             child: Column(
               children: [
                 Text(
-                  "Misbah Uddin Tareq",
-                  style: TextStyle(fontSize: 18.0, color: Colors.white),
+                  "Study Drive",
+                  style: TextStyle(fontSize: 25.0, color: Colors.white),
                 ),
                 Text(
-                  "Misbah Uddin Tareq",
-                  style: TextStyle(fontSize: 18.0, color: Colors.white),
+                  "Leading University",
+                  style: TextStyle(fontSize: 20.0, color: Colors.white),
                 ),
-                Text(
-                  "Misbah Uddin Tareq",
-                  style: TextStyle(fontSize: 18.0, color: Colors.white),
-                ),
-                Text(
-                  "Misbah Uddin Tareq",
-                  style: TextStyle(fontSize: 18.0, color: Colors.white),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(15),
-                  child: StaggeredGridView.countBuilder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    physics: ScrollPhysics(),
-                    crossAxisCount: 2,
-                    itemCount: storedocs.length,
-                    staggeredTileBuilder: (int index) =>
-                        StaggeredTile.extent(1, 150),
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    itemBuilder: (BuildContext context, int index) {
-                      return new GestureDetector(
-                        child: Card(
-                          color: Colors.white70,
-                          /*child: ListTile(
-                          title: Text(
-                            storedocs[index]['Department Name'],
-                            style: TextStyle(fontSize: 18.0),
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: 40, bottom: 15, left: 15, right: 15),
+                    child: StaggeredGridView.countBuilder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      physics: ScrollPhysics(),
+                      crossAxisCount: 2,
+                      itemCount: storedocs.length,
+                      staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      itemBuilder: (BuildContext context, int index) => Card(
+                        child: ListTile(
+                          title: Center(
+                            child: Text(
+                              storedocs[index]['Department Name'],
+                              style: TextStyle(fontSize: 18.0),
+                            ),
                           ),
                           tileColor: kPrimaryLightColor,
-                          leading: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Image.network(
-                                "https://media-exp1.licdn.com/dms/image/C5603AQFTNHaWoz9-DQ/profile-displayphoto-shrink_800_800/0/1619187655949?e=1649894400&v=beta&t=I2xDAgh9KRP4ksVDxRcsPrRynF24Uj7rp0etI4yQbKs"),
-                          ),
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => Semister(),
+                                builder: (context) => Semister(
+                                  department: storedocs[index]
+                                      ['Department Name'],
+                                ),
                               ),
                             );
                           },
-                        ),*/
-                          child: Column(
-                            children: [
-                              //Icon(Icons.edit),
-                              Ink.image(
-                                image: NetworkImage(
-                                  "https://media-exp1.licdn.com/dms/image/C5603AQFTNHaWoz9-DQ/profile-displayphoto-shrink_800_800/0/1619187655949?e=1649894400&v=beta&t=I2xDAgh9KRP4ksVDxRcsPrRynF24Uj7rp0etI4yQbKs",
-                                ),
-                                height: 100,
-                                fit: BoxFit.fill,
-                              ),
-                              Text(
-                                storedocs[index]['Department Name'],
-                                style: TextStyle(
-                                    fontSize: 18.0, color: Colors.black),
-                              ),
-                            ],
-                          ),
                         ),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => Semister(department: storedocs[index]['Department Name'],),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                      ),
+                    ),
                   ),
                 ),
               ],
