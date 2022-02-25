@@ -54,18 +54,30 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 40,
+                    left: 40,
+                    right: 40,
+                    bottom: 25,
+                  ),
+                ),
                 Text(
                   "Study Drive",
                   style: TextStyle(fontSize: 25.0, color: Colors.white),
                 ),
                 Text(
                   "Leading University",
+                  style: TextStyle(fontSize: 22.0, color: Colors.white),
+                ),
+                Text(
+                  "Departments",
                   style: TextStyle(fontSize: 20.0, color: Colors.white),
                 ),
                 Center(
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: 40, bottom: 15, left: 15, right: 15),
+                        top: 0, bottom: 15, left: 15, right: 15,),
                     child: StaggeredGridView.countBuilder(
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
