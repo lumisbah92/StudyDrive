@@ -38,48 +38,57 @@ class _PostListState extends State<PostList> {
           margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                Row(
-                  children: [
+            child: Container(
+              child: Column(
+                children: [
+                  for (var i = 0; i < storedocs.length; i++) ...[
                     Row(
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 10),
-                          child: CircleAvatar(),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: 10, top: 10),
+                              child: CircleAvatar(),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10, top: 10,right: 10),
+                              child: Text(
+                                "Misbah Uddin Tareq",
+                                style:
+                                TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 10, top: 10,right: 10),
-                          child: Text(
-                            "Misbah Uddin Tareq",
-                            style:
-                            TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                          margin: EdgeInsets.only(right: 10,top: 10),
+                          child: PopupMenuButton(
+                            icon: Icon(Icons.more_horiz),
+                            itemBuilder: (context) => [
+                              PopupMenuItem(
+                                child: Text("Edit Post"),
+                              ),
+                              PopupMenuItem(
+                                child: Text("Delete Post"),
+                              ),
+                            ],
                           ),
                         )
                       ],
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 10,top: 10),
-                      child: Icon(Icons.more_horiz),
-                    )
-                  ],
-                ),
-                ConstrainedBox(
-                  constraints: new BoxConstraints(
-                    minHeight: 150,
-                    minWidth: 150,
-                    maxHeight: 350.0,
-                    maxWidth: MediaQuery.of(context).size.width,
-                  ),
-                  child: Container(
-                    child: Card(
-                      child: ListTile(
-
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
+                      width: 350,
+                      color: kPrimaryLightColor,
+                      child: Text(
+                        storedocs[i]['Post'],
+                        style: TextStyle(fontSize: 18, color: Colors.black),
                       ),
-                    )
-                  ),
-                ),
-              ],
+                    ),
+                  ],
+                ],
+              ),
             ),
           ),
         );
