@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Files/Department/Department.dart';
 import 'package:study_drive/pages/Navigation Drawer/navigation_drawer_widget.dart';
-import 'package:study_drive/pages/Navigation%20Drawer/page/post.dart';
+import 'package:study_drive/pages/Navigation Drawer/page/PostList.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
   Future<void> addUser() {
     return students
         .add({
-      'Post Name': post,
+      'Post': post,
     })
         .then((value) => print('Post Added'))
         .catchError((error) => print('Failed to Add Post: $error'));
@@ -108,14 +108,9 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       Container(
                         // Post field
-                        margin: EdgeInsets.only(left: 10),
+                        //margin: EdgeInsets.only(left: 10),
                         padding: EdgeInsets.only(left: 10),
-                        height: 50,
                         width: size.width * 0.8,
-                        decoration: BoxDecoration(
-                          color: kPrimaryLightColor,
-                          //borderRadius: BorderRadius.circular(29),
-                        ),
                         child: TextFormField(
                           autofocus: false,
                           obscureText: false,
@@ -165,6 +160,7 @@ class _DashboardState extends State<Dashboard> {
                                                       color: Colors.redAccent,
                                                       fontSize: 15),
                                                 ),
+                                                keyboardType: TextInputType.multiline,
                                                 maxLines: 10,
                                                 minLines: 1,
                                                 controller:
@@ -172,7 +168,7 @@ class _DashboardState extends State<Dashboard> {
                                                 validator: (value) {
                                                   if (value == null ||
                                                       value.isEmpty) {
-                                                    return 'Please Enter Department name';
+                                                    return 'Please Write Something';
                                                   }
                                                   return null;
                                                 },
@@ -181,21 +177,35 @@ class _DashboardState extends State<Dashboard> {
                                             SizedBox(
                                               height: 12,
                                             ),
-                                            ElevatedButton(
-                                              child: Text('Post'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop;
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  setState(
-                                                    () {
-                                                      post =
-                                                          postController
-                                                              .text;
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: IconButton(
+                                                    icon: Icon(Icons.attach_file),
+                                                    onPressed: (){
+
                                                     },
-                                                  );
-                                                }
-                                              },
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  child: Text('Post'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop;
+                                                    if (_formKey.currentState!
+                                                        .validate()) {
+                                                      setState(
+                                                        () {
+                                                          post = postController.text;
+                                                          addUser();
+                                                          clearText();
+                                                        },
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -206,10 +216,16 @@ class _DashboardState extends State<Dashboard> {
                               },
                             ),
                             hintText: "Write Something",
-                            border: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                            fillColor: kPrimaryLightColor,
                             errorStyle: TextStyle(
                                 color: Colors.redAccent, fontSize: 15),
                           ),
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 20,
+                          minLines: 1,
                           // controller: passwordController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -241,7 +257,7 @@ class _DashboardState extends State<Dashboard> {
             Padding(
               padding: EdgeInsets.only(top: 1),
             ),
-            posts(),
+            PostList(),
           ],
         ),
       ),

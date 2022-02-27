@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:study_drive/pages/Login/login.dart';
 import 'package:study_drive/pages/Signup/signup.dart';
 
+import '../constants.dart';
+
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({Key? key}) : super(key: key);
 
@@ -56,18 +58,27 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text("Reset Password"),
       ),
       body: Column(
+
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 20.0),
-            child: Text(
-              'Reset Link will be sent to your email id !',
-              style: TextStyle(fontSize: 20.0),
+
+          Positioned(
+            bottom: 0,
+            left: 0,
+            child: Image.asset(
+              "assets/images/forgot.png",
+              width: size.width * 0.50,
             ),
+          ),
+
+          Container(
+            margin: EdgeInsets.only(top: 8.0),
+
           ),
           Expanded(
             child: Form(
@@ -77,15 +88,27 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: ListView(
                   children: [
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      // email field
+                      margin: EdgeInsets.only(top: 10),
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      width: size.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: kPrimaryLightColor,
+                        borderRadius: BorderRadius.circular(29),
+                      ),
                       child: TextFormField(
                         autofocus: false,
+                        cursorColor: kPrimaryColor,
                         decoration: InputDecoration(
-                          labelText: 'Email: ',
-                          labelStyle: TextStyle(fontSize: 20.0),
-                          border: OutlineInputBorder(),
+                          icon: Icon(
+                            Icons.person,
+                            color: kPrimaryColor,
+                          ),
+                          hintText: 'Email: ',
+                          border: InputBorder.none,
                           errorStyle:
-                              TextStyle(color: Colors.redAccent, fontSize: 15),
+                          TextStyle(color: Colors.redAccent, fontSize: 15),
                         ),
                         controller: emailController,
                         validator: (value) {
@@ -99,64 +122,54 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 60.0),
+                      margin: EdgeInsets.only(left: 3.0, top: 15.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            onPressed: () {
-                              // Validate returns true if the form is valid, otherwise false.
-                              if (_formKey.currentState!.validate()) {
-                                setState(() {
-                                  email = emailController.text;
-                                });
-                                resetPassword();
+                            child: Text("Send Email"),
+                            style: ElevatedButton.styleFrom(
+                              onPrimary: Colors.white,
+                              primary: kPrimaryColor,
+                              onSurface: Colors.grey,
+                              side: BorderSide(color: Colors.black, width: 1),
+                              elevation: 20,
+                              minimumSize: Size(140,40),
+                              shadowColor: Colors.teal,
+                            ),
+                            onPressed:() {
+                              {
+                                // Validate returns true if the form is valid, otherwise false.
+                                if (_formKey.currentState!.validate()) {
+                                  setState(() {
+                                    email = emailController.text;
+                                  });
+                                  resetPassword();
+                                }
                               }
                             },
-                            child: Text(
-                              'Send Email',
-                              style: TextStyle(fontSize: 18.0),
-                            ),
                           ),
-                          TextButton(
-                            onPressed: () => {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, a, b) => Login(),
-                                    transitionDuration: Duration(seconds: 0),
-                                  ),
-                                  (route) => false)
-                            },
-                            child: Text(
-                              'Login',
-                              style: TextStyle(fontSize: 14.0),
-                            ),
-                          ),
+
+
                         ],
+
                       ),
                     ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Don't have an Account? "),
-                          TextButton(
-                              onPressed: () => {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        PageRouteBuilder(
-                                          pageBuilder: (context, a, b) =>
-                                              Signup(),
-                                          transitionDuration:
-                                              Duration(seconds: 0),
-                                        ),
-                                        (route) => false)
-                                  },
-                              child: Text('Signup'))
-                        ],
+                    TextButton(
+                      onPressed: () => {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, a, b) => Login(),
+                              transitionDuration: Duration(seconds: 0),
+                            ),
+                                (route) => false)
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(fontSize: 14.0),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
