@@ -25,59 +25,86 @@ class _showFilesState extends State<showFiles> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text("ShowFiles"),
-          centerTitle: true,
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: kPrimaryColor,
-          icon: Icon(Icons.cloud_upload_sharp),
-          label: Text("Upload Files"),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => allFilesPage(),
-              ),
-            );
-          },
-        ),
-        body: FutureBuilder<List<FirebaseFile>>(
-          future: futureFiles,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator());
-              default:
-                if (snapshot.hasError) {
-                  return Center(child: Text('Some error occurred!'));
-                } else {
-                  final files = snapshot.data!;
+  Widget build(BuildContext context) {
+    return SafeArea(
+    child: Scaffold(
+          floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: kPrimaryColor,
+            icon: Icon(Icons.cloud_upload_sharp),
+            label: Text("Upload Files"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => allFilesPage(),
+                ),
+              );
+            },
+          ),
+          body: FutureBuilder<List<FirebaseFile>>(
+            future: futureFiles,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(child: CircularProgressIndicator());
+                default:
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Some error occurred!'));
+                  } else {
+                    final files = snapshot.data!;
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      buildHeader(files.length),
-                      const SizedBox(height: 12),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: files.length,
-                          itemBuilder: (context, index) {
-                            final file = files[index];
-
-                            return buildFile(context, file);
-                          },
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildHeader(files.length),
+                        const SizedBox(height: 12),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: files.length,
+                            itemBuilder: (context, index) {
+                              final file = files[index];
+                              final extension = file.url.split('.').last.split('?').first;
+                              return buildFile(context, file, extension);
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                }
-            }
-          },
+                      ],
+                    );
+                  }
+              }
+            },
+          ),
         ),
-      );
+  );
+  }
 
-  Widget buildFile(BuildContext context, FirebaseFile file) => Padding(
+  Widget buildFile(BuildContext context, FirebaseFile file, String extension) {
+    var Ico = Icons.extension;
+    switch(extension){
+      case 'jpg':
+        Ico = Icons.image;
+        break;
+      case 'jpeg':
+        Ico = Icons.image;
+        break;
+      case 'png':
+        Ico = Icons.image;
+        break;
+      case 'JPG':
+        Ico = Icons.image;
+        break;
+      case 'JPEG':
+        Ico = Icons.image;
+        break;
+      case 'PNG':
+        Ico = Icons.image;
+        break;
+      case 'mp4':
+        Ico = Icons.ondemand_video;
+        break;
+      case 'pdf':
+        Ico = Icons.picture_as_pdf_sharp;
+    }
+    return Padding(
         padding: EdgeInsets.only(top: 5, left: 30,right: 30,),
         child: Card(
           child: ListTile(
@@ -89,16 +116,37 @@ class _showFilesState extends State<showFiles> {
                 color: Colors.blue,
               ),
             ),
+            leading: Icon(
+              Ico,
+              color: Colors.blue,
+            ),
             tileColor: kPrimaryLightColor,
             onTap: () {
+              print("Extension : ${file.url.split('.').last.split('?').first}");
               print(file.url);
               openFile(
                   url: file.url,
               );
             },
+
+            trailing: SizedBox(
+              width: 30,
+              height: 40,
+              child: PopupMenuButton(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: Text("Edit File"),
+                  ),
+                  PopupMenuItem(
+                    child: Text("Delete File"),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       );
+  }
 
   Widget buildHeader(int length) => ListTile(
         tileColor: Colors.blue,
@@ -106,7 +154,7 @@ class _showFilesState extends State<showFiles> {
           width: 52,
           height: 52,
           child: Icon(
-            Icons.file_copy,
+            Icons.attach_file,
             color: Colors.white,
           ),
         ),

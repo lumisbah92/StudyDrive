@@ -48,11 +48,34 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
         }).toList();
 
         return Container(
-          margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+          margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                    ),
+                    Text(
+                      "Leading University",
+                      style: TextStyle(fontSize: 25.0, color: Colors.black),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(2),
+                    ),
+                    Text(
+                      "Semisters",
+                      style: TextStyle(fontSize: 22.0, color: Colors.black),
+                    ),
+                    Text(
+                      "Courses",
+                      style: TextStyle(fontSize: 20.0, color: Colors.black),
+                    ),
+                  ],
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 for (var i = 0; i < storedocs.length; i++) ...[
                   Card(
                     child: ListTile(
@@ -62,10 +85,23 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
                       ),
                       tileColor: kPrimaryLightColor,
                       leading: SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Image.network(
-                            "https://media-exp1.licdn.com/dms/image/C5603AQFTNHaWoz9-DQ/profile-displayphoto-shrink_800_800/0/1619187655949?e=1649894400&v=beta&t=I2xDAgh9KRP4ksVDxRcsPrRynF24Uj7rp0etI4yQbKs"),
+                        width: 30,
+                        height: 30,
+                        child: Icon(Icons.school, color: Colors.black87),
+                      ),
+                      trailing: SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: PopupMenuButton(
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              child: Text("Edit Course"),
+                            ),
+                            PopupMenuItem(
+                              child: Text("Delete Course"),
+                            ),
+                          ],
+                        ),
                       ),
                       onTap: () {
                         Navigator.of(context).push(

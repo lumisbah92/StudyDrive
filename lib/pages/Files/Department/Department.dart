@@ -46,120 +46,122 @@ class _DepartmentState extends State<Department> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Stack(
-      children: [
-        ShaderMask(
-          shaderCallback: (bounds) => LinearGradient(
-            colors: [Colors.black38, Colors.black87],
-            begin: Alignment.center,
-            end: Alignment.bottomCenter,
-          ).createShader(bounds),
-          blendMode: BlendMode.darken,
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image:
-                      AssetImage("assets/images/background_for_department.png"),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.08),
-                    BlendMode.darken,
-                  )),
+    return SafeArea(
+      child: Stack(
+        children: [
+          ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+              colors: [Colors.black38, Colors.black87],
+              begin: Alignment.center,
+              end: Alignment.bottomCenter,
+            ).createShader(bounds),
+            blendMode: BlendMode.darken,
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image:
+                        AssetImage("assets/images/background_for_department.png"),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.001),
+                      BlendMode.darken,
+                    )),
+              ),
             ),
           ),
-        ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          floatingActionButton: FloatingActionButton.extended(
-            backgroundColor: kPrimaryColor,
-            icon: Icon(Icons.add),
-            label: Text("Add Department"),
-            onPressed: () {
-              showDialog(
-                context: context,
-                // barrierDismissible: false,
-                builder: (context) => Form(
-                  key: _formKey,
-                  child: Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            // Department name field
-                            margin: EdgeInsets.only(top: 10),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 2),
-                            width: size.width * 0.8,
-                            decoration: BoxDecoration(
-                              color: kPrimaryLightColor,
-                              borderRadius: BorderRadius.circular(29),
-                            ),
-                            child: TextFormField(
-                              autofocus: false,
-                              cursorColor: kPrimaryColor,
-                              decoration: InputDecoration(
-                                icon: Icon(
-                                  Icons.school,
-                                  color: kPrimaryColor,
-                                ),
-                                hintText: 'Department Name: ',
-                                border: InputBorder.none,
-                                errorStyle: TextStyle(
-                                    color: Colors.redAccent, fontSize: 15),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            floatingActionButton: FloatingActionButton.extended(
+              backgroundColor: kPrimaryColor,
+              icon: Icon(Icons.add),
+              label: Text("Add Department"),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  // barrierDismissible: false,
+                  builder: (context) => Form(
+                    key: _formKey,
+                    child: Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              // Department name field
+                              margin: EdgeInsets.only(top: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 2),
+                              width: size.width * 0.8,
+                              decoration: BoxDecoration(
+                                color: kPrimaryLightColor,
+                                borderRadius: BorderRadius.circular(29),
                               ),
-                              controller: departmentController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter Department name';
+                              child: TextFormField(
+                                autofocus: false,
+                                cursorColor: kPrimaryColor,
+                                decoration: InputDecoration(
+                                  icon: Icon(
+                                    Icons.school,
+                                    color: kPrimaryColor,
+                                  ),
+                                  hintText: 'Department Name: ',
+                                  border: InputBorder.none,
+                                  errorStyle: TextStyle(
+                                      color: Colors.redAccent, fontSize: 15),
+                                ),
+                                controller: departmentController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please Enter Department name';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            ElevatedButton(
+                              child: Text('Submit'),
+                              onPressed: () {
+                                Navigator.of(context).pop;
+                                if (_formKey.currentState!.validate()) {
+                                  setState(
+                                    () {
+                                      department = departmentController.text;
+                                      addUser();
+                                      clearText();
+                                    },
+                                  );
                                 }
-                                return null;
                               },
                             ),
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          ElevatedButton(
-                            child: Text('Submit'),
-                            onPressed: () {
-                              Navigator.of(context).pop;
-                              if (_formKey.currentState!.validate()) {
-                                setState(
-                                  () {
-                                    department = departmentController.text;
-                                    addUser();
-                                    clearText();
-                                  },
-                                );
-                              }
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-          body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ListDepartmentPage(),
-              ],
+                );
+              },
+            ),
+            body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ListDepartmentPage(),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

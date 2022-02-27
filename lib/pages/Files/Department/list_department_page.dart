@@ -77,7 +77,7 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                 Center(
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: 0, bottom: 15, left: 15, right: 15,),
+                        top: 15, bottom: 15, left: 5, right: 5,),
                     child: StaggeredGridView.countBuilder(
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
@@ -106,6 +106,20 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                               ),
                             );
                           },
+                          trailing: SizedBox(
+                            width: 30,
+                            height: 40,
+                            child: PopupMenuButton(
+                              itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  child: Text("Edit Department"),
+                                ),
+                                PopupMenuItem(
+                                  child: Text("Delete Department"),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),

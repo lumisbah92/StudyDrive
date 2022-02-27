@@ -45,89 +45,88 @@ class _CoursesState extends State<Courses> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Course'),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: kPrimaryColor,
-        icon: Icon(Icons.add),
-        label: Text("Add Course"),
-        onPressed: () {
-          showDialog(
-            context: context,
-            // barrierDismissible: false,
-            builder: (context) => Form(
-              key: _formKey,
-              child: Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        // Course name field
-                        margin: EdgeInsets.only(top: 10),
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                        width: size.width * 0.8,
-                        decoration: BoxDecoration(
-                          color: kPrimaryLightColor,
-                          borderRadius: BorderRadius.circular(29),
-                        ),
-                        child: TextFormField(
-                          autofocus: false,
-                          cursorColor: kPrimaryColor,
-                          decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.school,
-                              color: kPrimaryColor,
-                            ),
-                            hintText: 'Course: ',
-                            border: InputBorder.none,
-                            errorStyle: TextStyle(
-                                color: Colors.redAccent, fontSize: 15),
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: kPrimaryColor,
+          icon: Icon(Icons.add),
+          label: Text("Add Course"),
+          onPressed: () {
+            showDialog(
+              context: context,
+              // barrierDismissible: false,
+              builder: (context) => Form(
+                key: _formKey,
+                child: Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          // Course name field
+                          margin: EdgeInsets.only(top: 10),
+                          padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                          width: size.width * 0.8,
+                          decoration: BoxDecoration(
+                            color: kPrimaryLightColor,
+                            borderRadius: BorderRadius.circular(29),
                           ),
-                          controller: courseController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Enter Course name';
+                          child: TextFormField(
+                            autofocus: false,
+                            cursorColor: kPrimaryColor,
+                            decoration: InputDecoration(
+                              icon: Icon(
+                                Icons.school,
+                                color: kPrimaryColor,
+                              ),
+                              hintText: 'Course: ',
+                              border: InputBorder.none,
+                              errorStyle: TextStyle(
+                                  color: Colors.redAccent, fontSize: 15),
+                            ),
+                            controller: courseController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Enter Course name';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        ElevatedButton(
+                          child: Text('Submit'),
+                          onPressed: () {
+                            Navigator.of(context).pop;
+                            if (_formKey.currentState!.validate()) {
+                              setState(
+                                    () {
+                                  course = courseController.text;
+                                  addUser();
+                                  clearText();
+                                },
+                              );
                             }
-                            return null;
                           },
                         ),
-                      ),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      ElevatedButton(
-                        child: Text('Submit'),
-                        onPressed: () {
-                          Navigator.of(context).pop;
-                          if (_formKey.currentState!.validate()) {
-                            setState(
-                                  () {
-                                course = courseController.text;
-                                addUser();
-                                clearText();
-                              },
-                            );
-                          }
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
+        body: ListCoursesPage(),
       ),
-      body: ListCoursesPage(),
     );
   }
 }

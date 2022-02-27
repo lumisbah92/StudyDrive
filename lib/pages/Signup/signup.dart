@@ -19,6 +19,8 @@ class _SignupState extends State<Signup> {
   var email = "";
   var password = "";
   var confirmPassword = "";
+  bool _secureText = true;
+  bool _secureText1 = true;
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
@@ -182,7 +184,7 @@ class _SignupState extends State<Signup> {
                       ),
                       child: TextFormField(
                         autofocus: false,
-                        obscureText: true,
+                        obscureText: _secureText,
                         cursorColor: kPrimaryColor,
                         decoration: InputDecoration(
                           hintText: "Password: ",
@@ -190,8 +192,13 @@ class _SignupState extends State<Signup> {
                             Icons.lock,
                             color: kPrimaryColor,
                           ),
-                          suffixIcon: Icon(
-                            Icons.visibility,
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.visibility,),
+                            onPressed: (){
+                              setState(() {
+                                _secureText = !_secureText;
+                              });
+                            },
                             color: kPrimaryColor,
                           ),
                           border: InputBorder.none,
@@ -218,7 +225,7 @@ class _SignupState extends State<Signup> {
                       ),
                       child: TextFormField(
                         autofocus: false,
-                        obscureText: true,
+                        obscureText: _secureText1,
                         cursorColor: kPrimaryColor,
                         decoration: InputDecoration(
                           hintText: "Confirm Password: ",
@@ -226,8 +233,13 @@ class _SignupState extends State<Signup> {
                             Icons.lock,
                             color: kPrimaryColor,
                           ),
-                          suffixIcon: Icon(
-                            Icons.visibility,
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.visibility,),
+                            onPressed: (){
+                              setState(() {
+                                _secureText1 = !_secureText1;
+                              });
+                            },
                             color: kPrimaryColor,
                           ),
                           border: InputBorder.none,

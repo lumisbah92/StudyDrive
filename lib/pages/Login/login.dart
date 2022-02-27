@@ -19,6 +19,7 @@ class _LoginState extends State<Login> {
 
   var email = "";
   var password = "";
+  bool _secureText = true;
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
@@ -162,7 +163,7 @@ class _LoginState extends State<Login> {
                       ),
                       child: TextFormField(
                         autofocus: false,
-                        obscureText: true,
+                        obscureText: _secureText,
                         cursorColor: kPrimaryColor,
                         decoration: InputDecoration(
                           hintText: "Password: ",
@@ -170,8 +171,13 @@ class _LoginState extends State<Login> {
                             Icons.lock,
                             color: kPrimaryColor,
                           ),
-                          suffixIcon: Icon(
-                            Icons.visibility,
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.visibility,),
+                            onPressed: (){
+                              setState(() {
+                                _secureText = !_secureText;
+                              });
+                            },
                             color: kPrimaryColor,
                           ),
                           border: InputBorder.none,
