@@ -39,6 +39,8 @@ dependencies:
   # open file
   open_file: ^3.2.1
 
+  flutter_swiper: ^1.1.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

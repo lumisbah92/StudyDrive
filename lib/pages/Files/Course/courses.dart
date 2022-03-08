@@ -4,13 +4,20 @@ import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Files/Course/ListCoursesPage.dart';
 
 class Courses extends StatefulWidget {
-  Courses({Key? key}) : super(key: key);
+  String department, semisters,id;
+
+
+  Courses({required this.department, required this.semisters, required this.id});
 
   @override
   _CoursesState createState() => _CoursesState();
 }
 
 class _CoursesState extends State<Courses> {
+
+  /*String department, semisters, id;
+  _CoursesState({required this.department, required this.semisters, required this.id});*/
+
   final _formKey = GlobalKey<FormState>();
   var course = "";
 
@@ -29,9 +36,20 @@ class _CoursesState extends State<Courses> {
     courseController.clear();
   }
 
+  late CollectionReference courses;
   // Adding Student
-  CollectionReference courses =
-  FirebaseFirestore.instance.collection('Courses');
+  /*CollectionReference courses =
+  FirebaseFirestore.instance.collection('Departments').doc(widget.department.toString()).collection('Courses');*/
+  AddDepartment() async{
+    courses =
+    FirebaseFirestore.instance.collection('CoursesList').doc(widget.department.toString()).collection(widget.semisters);
+    courses
+        .add({
+      'Course': course,
+    })
+        .then((value) => print('Course Added'))
+        .catchError((error) => print('Failed to Add Course: $error'));
+  }
 
   Future<void> addUser() {
     return courses
@@ -110,7 +128,8 @@ class _CoursesState extends State<Courses> {
                               setState(
                                     () {
                                   course = courseController.text;
-                                  addUser();
+                                  AddDepartment();
+                                  //addUser();
                                   clearText();
                                 },
                               );
@@ -125,7 +144,7 @@ class _CoursesState extends State<Courses> {
             );
           },
         ),
-        body: ListCoursesPage(),
+        body: ListCoursesPage(department: widget.department, semisters: widget.semisters, id: widget.id),
       ),
     );
   }

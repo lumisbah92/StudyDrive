@@ -4,15 +4,16 @@ import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Files/AllFiles/ShowFiles/showFile.dart';
 
 class ListCoursesPage extends StatefulWidget {
-  ListCoursesPage({Key? key}) : super(key: key);
+  String department, semisters, id;
+
+  ListCoursesPage(
+      {required this.department, required this.semisters, required this.id});
 
   @override
   _ListCoursesPageState createState() => _ListCoursesPageState();
 }
 
 class _ListCoursesPageState extends State<ListCoursesPage> {
-  final Stream<QuerySnapshot> studentsStream =
-      FirebaseFirestore.instance.collection('Courses').snapshots();
 
   /*// For Deleting User
   CollectionReference students =
@@ -29,7 +30,7 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: studentsStream,
+      stream: FirebaseFirestore.instance.collection('CoursesList').doc(widget.department.toString()).collection(widget.semisters).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           print('Something went Wrong');
@@ -55,23 +56,37 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
               children: [
                 Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                    ),
-                    Text(
-                      "Leading University",
-                      style: TextStyle(fontSize: 25.0, color: Colors.black),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(2),
-                    ),
-                    Text(
-                      "Semisters",
-                      style: TextStyle(fontSize: 22.0, color: Colors.black),
-                    ),
-                    Text(
-                      "Courses",
-                      style: TextStyle(fontSize: 20.0, color: Colors.black),
+                    Center(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Text(
+                            "Leading University",
+                            style:
+                            TextStyle(fontSize: 28.0, color: Colors.black),
+                          ),
+                          Text(
+                            widget.department,
+                            style:
+                                TextStyle(fontSize: 25.0, color: Colors.black),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(2),
+                          ),
+                          Text(
+                            widget.semisters,
+                            style:
+                                TextStyle(fontSize: 22.0, color: Colors.black),
+                          ),
+                          Text(
+                            "Courses",
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.black),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -106,7 +121,7 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => showFiles(),
+                            builder: (context) => showFiles(Course: storedocs[i]['Course']),
                           ),
                         );
                       },

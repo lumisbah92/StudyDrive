@@ -7,6 +7,10 @@ import 'package:study_drive/pages/Files/AllFiles/ShowFiles/showFile.dart';
 import 'package:study_drive/pages/Files/AllFiles/firebase_api.dart';
 
 class allFilesPage extends StatefulWidget {
+  String course;
+
+  allFilesPage({required this.course});
+
   @override
   _allFilesPageState createState() => _allFilesPageState();
 }
@@ -104,7 +108,8 @@ class _allFilesPageState extends State<allFilesPage> {
     }
 
     final fileName = basename(file!.path);
-    final destination = 'files/$fileName';
+    String courseName = widget.course;
+    final destination = '$courseName/$fileName';
 
     task = FirebaseApi.uploadFile(destination, file!);
     setState(() {});
@@ -137,7 +142,7 @@ class _allFilesPageState extends State<allFilesPage> {
     );
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => showFiles(),
+        builder: (context) => showFiles(Course: widget.course),
       ),
     );
   }

@@ -4,18 +4,15 @@ import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Files/Course/courses.dart';
 
 class Semister extends StatefulWidget {
-  String department;
+  String department,id;
 
-  Semister({required this.department});
+  Semister({required this.department, required this.id});
 
   @override
-  _SemisterState createState() => _SemisterState(department: department);
+  _SemisterState createState() => _SemisterState();
 }
 
 class _SemisterState extends State<Semister> {
-  String department = "Unknown";
-
-  _SemisterState({required this.department});
 
   final List semisters = [
     "1st Semister",
@@ -55,7 +52,7 @@ class _SemisterState extends State<Semister> {
                       padding: EdgeInsets.all(2),
                     ),
                     Text(
-                      department,
+                      widget.department,
                       style: TextStyle(fontSize: 22.0, color: Colors.black),
                     ),
                     Text(
@@ -105,7 +102,7 @@ class _SemisterState extends State<Semister> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => Courses(),
+                                builder: (context) => Courses(department: widget.department, semisters: semisters[index], id: widget.id),
                               ),
                             );
                           },

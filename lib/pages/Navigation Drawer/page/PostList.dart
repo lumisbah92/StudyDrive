@@ -11,7 +11,7 @@ class PostList extends StatefulWidget {
 
 class _PostListState extends State<PostList> {
   final Stream<QuerySnapshot> studentsStream =
-  FirebaseFirestore.instance.collection('Posts').snapshots();
+      FirebaseFirestore.instance.collection('Posts').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +51,18 @@ class _PostListState extends State<PostList> {
                               child: CircleAvatar(),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 10, top: 10,right: 10),
+                              margin:
+                                  EdgeInsets.only(left: 10, top: 10, right: 10),
                               child: Text(
                                 "Misbah Uddin Tareq",
-                                style:
-                                TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             )
                           ],
                         ),
                         Container(
-                          margin: EdgeInsets.only(right: 10,top: 10),
+                          margin: EdgeInsets.only(right: 10, top: 10),
                           child: PopupMenuButton(
                             icon: Icon(Icons.more_horiz),
                             itemBuilder: (context) => [
@@ -83,8 +84,58 @@ class _PostListState extends State<PostList> {
                       color: kPrimaryLightColor,
                       child: Text(
                         storedocs[i]['Post'],
-                        style: TextStyle(fontSize: 18, color: Colors.black),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 0, right: 40),
+                          alignment: Alignment.center,
+                          height: 20,
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: Container(
+                            width: 100,
+                            child: Row(
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  //width: 30,
+                                  child: Icon(Icons.favorite_border,
+                                      color: Colors.blue),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  //width: 30,
+                                  child: Text("Upvote"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 0, left: 20),
+                          alignment: Alignment.center,
+                          height: 50,
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: Row(
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                width: 30,
+                                child: Icon(Icons.add_comment,
+                                    color: Colors.black),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: Text("comment"),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ],

@@ -10,6 +10,10 @@ import 'package:study_drive/pages/Files/AllFiles/ShowFiles/firebase_file.dart';
 import 'package:study_drive/pages/Files/AllFiles/allFiles.dart';
 
 class showFiles extends StatefulWidget {
+  String Course;
+
+  showFiles({required this.Course});
+
   @override
   _showFilesState createState() => _showFilesState();
 }
@@ -20,8 +24,8 @@ class _showFilesState extends State<showFiles> {
   @override
   void initState() {
     super.initState();
-
-    futureFiles = FirebaseApi.listAll('files/');
+    String CourseName = widget.Course;
+    futureFiles = FirebaseApi.listAll('$CourseName');
   }
 
   @override
@@ -35,7 +39,7 @@ class _showFilesState extends State<showFiles> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => allFilesPage(),
+                  builder: (context) => allFilesPage(course: widget.Course),
                 ),
               );
             },
