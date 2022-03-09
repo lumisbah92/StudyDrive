@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +17,7 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
 
+  var name = "";
   var email = "";
   var password = "";
   var confirmPassword = "";
@@ -24,6 +26,7 @@ class _SignupState extends State<Signup> {
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -31,10 +34,25 @@ class _SignupState extends State<Signup> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  CollectionReference students =
+      FirebaseFirestore.instance.collection('UserList');
+
+  Future<void> addUser() {
+    return students
+        .add({
+          'Name': name,
+          'Email': email,
+          'Password': password,
+        })
+        .then((value) => print('User Added'))
+        .catchError((error) => print('Failed to Add User: $error'));
   }
 
   registration() async {
@@ -52,6 +70,7 @@ class _SignupState extends State<Signup> {
             ),
           ),
         );
+        addUser();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -126,7 +145,6 @@ class _SignupState extends State<Signup> {
                   width: size.width * 0.25,
                 ),
               ),
-
               SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -141,9 +159,10 @@ class _SignupState extends State<Signup> {
                       height: size.height * 0.30,
                     ),
                     Container(
-                      // email field
+                      // Name field
                       margin: EdgeInsets.only(top: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 2),
                       width: size.width * 0.8,
                       decoration: BoxDecoration(
                         color: kPrimaryLightColor,
@@ -157,10 +176,42 @@ class _SignupState extends State<Signup> {
                             Icons.person,
                             color: kPrimaryColor,
                           ),
+                          hintText: 'Name: ',
+                          border: InputBorder.none,
+                          errorStyle:
+                              TextStyle(color: Colors.redAccent, fontSize: 15),
+                        ),
+                        controller: nameController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Enter Your Name';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Container(
+                      // email field
+                      margin: EdgeInsets.only(top: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      width: size.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: kPrimaryLightColor,
+                        borderRadius: BorderRadius.circular(29),
+                      ),
+                      child: TextFormField(
+                        autofocus: false,
+                        cursorColor: kPrimaryColor,
+                        decoration: InputDecoration(
+                          icon: Icon(
+                            Icons.email,
+                            color: kPrimaryColor,
+                          ),
                           hintText: 'Email: ',
                           border: InputBorder.none,
                           errorStyle:
-                          TextStyle(color: Colors.redAccent, fontSize: 15),
+                              TextStyle(color: Colors.redAccent, fontSize: 15),
                         ),
                         controller: emailController,
                         validator: (value) {
@@ -176,7 +227,8 @@ class _SignupState extends State<Signup> {
                     Container(
                       // password field
                       margin: EdgeInsets.only(top: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 2),
                       width: size.width * 0.8,
                       decoration: BoxDecoration(
                         color: kPrimaryLightColor,
@@ -193,8 +245,10 @@ class _SignupState extends State<Signup> {
                             color: kPrimaryColor,
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.visibility,),
-                            onPressed: (){
+                            icon: Icon(
+                              Icons.visibility,
+                            ),
+                            onPressed: () {
                               setState(() {
                                 _secureText = !_secureText;
                               });
@@ -203,7 +257,7 @@ class _SignupState extends State<Signup> {
                           ),
                           border: InputBorder.none,
                           errorStyle:
-                          TextStyle(color: Colors.redAccent, fontSize: 15),
+                              TextStyle(color: Colors.redAccent, fontSize: 15),
                         ),
                         controller: passwordController,
                         validator: (value) {
@@ -217,7 +271,8 @@ class _SignupState extends State<Signup> {
                     Container(
                       // Confirm password field
                       margin: EdgeInsets.only(top: 10, bottom: 5),
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 2),
                       width: size.width * 0.8,
                       decoration: BoxDecoration(
                         color: kPrimaryLightColor,
@@ -234,8 +289,10 @@ class _SignupState extends State<Signup> {
                             color: kPrimaryColor,
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.visibility,),
-                            onPressed: (){
+                            icon: Icon(
+                              Icons.visibility,
+                            ),
+                            onPressed: () {
                               setState(() {
                                 _secureText1 = !_secureText1;
                               });
@@ -244,7 +301,7 @@ class _SignupState extends State<Signup> {
                           ),
                           border: InputBorder.none,
                           errorStyle:
-                          TextStyle(color: Colors.redAccent, fontSize: 15),
+                              TextStyle(color: Colors.redAccent, fontSize: 15),
                         ),
                         controller: confirmPasswordController,
                         validator: (value) {
@@ -265,9 +322,11 @@ class _SignupState extends State<Signup> {
                               // Validate returns true if the form is valid, otherwise false.
                               if (_formKey.currentState!.validate()) {
                                 setState(() {
+                                  name = nameController.text;
                                   email = emailController.text;
                                   password = passwordController.text;
-                                  confirmPassword = confirmPasswordController.text;
+                                  confirmPassword =
+                                      confirmPasswordController.text;
                                 });
                                 registration();
                               }
@@ -294,8 +353,9 @@ class _SignupState extends State<Signup> {
                               Navigator.pushReplacement(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder: (context, animation1, animation2) =>
-                                      Login(),
+                                  pageBuilder:
+                                      (context, animation1, animation2) =>
+                                          Login(),
                                   transitionDuration: Duration(seconds: 0),
                                 ),
                               )

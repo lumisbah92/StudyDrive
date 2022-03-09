@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,91 +13,116 @@ import 'package:study_drive/pages/Navigation Drawer/page/change_password.dart';
 class NavigationDrawerWidget extends StatelessWidget {
   final padding = EdgeInsets.symmetric(horizontal: 20);
   final storage = new FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
-    final name = 'Misbah';
-    final email = 'misbah@gmail.com';
-    final urlImage = 'https://media-exp1.licdn.com/dms/image/C5603AQFTNHaWoz9-DQ/profile-displayphoto-shrink_800_800/0/1619187655949?e=1649894400&v=beta&t=I2xDAgh9KRP4ksVDxRcsPrRynF24Uj7rp0etI4yQbKs';
+    final Stream<QuerySnapshot> studentsStream =
+        FirebaseFirestore.instance.collection('UserList').snapshots();
 
-    return Drawer(
-      child: Material(
-        color: kPrimaryColor,
-        child: ListView(
-          children: <Widget>[
-            buildHeader(
-              urlImage: urlImage,
-              name: name,
-              email: email,
-              onClicked: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => UserPage(
-                  name: 'Misbah Uddin Tareq',
-                  urlImage: urlImage,
-                ),
-              )),
-            ),
-            Container(
-              padding: padding,
-              child: Column(
-                children: [
-                  const SizedBox(height: 12),
-                  buildSearchField(),
-                  const SizedBox(height: 24),
-                  buildMenuItem(
-                    text: 'DashBoard',
-                    icon: Icons.dashboard,
-                    onClicked: () => selectedItem(context, 0),
-                  ),
-                  const SizedBox(height: 16),
-                  buildMenuItem(
-                    text: 'Profile',
-                    icon: Icons.person,
-                    onClicked: () => selectedItem(context, 1),
-                  ),
-                  const SizedBox(height: 16),
-                  buildMenuItem(
-                    text: 'Notifications',
-                    icon: Icons.notifications_outlined,
-                  ),
-                  const SizedBox(height: 16),
-                  buildMenuItem(
-                    text: 'Change Password',
-                    icon: Icons.password,
-                    onClicked: () => selectedItem(context, 3),
-                  ),
-                  const SizedBox(height: 24),
-                  Divider(color: Colors.white70),
-                  const SizedBox(height: 24),
-                  buildMenuItem(
-                    text: 'StudyDrive',
-                    icon: Icons.attach_file,
-                    onClicked: () => selectedItem(context, 4),
-                  ),
-                  const SizedBox(height: 16),
-                  buildMenuItem(
-                    text: 'Logout',
-                    icon: Icons.logout,
-                    onClicked: () async {
-                      await FirebaseAuth.instance.signOut();
-                      await storage.delete(key: "uid");
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Login(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: studentsStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          print('Something went Wrong');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        final List storedocs = [];
+        snapshot.data!.docs.map((DocumentSnapshot document) {
+          Map a = document.data() as Map<String, dynamic>;
+          storedocs.add(a);
+          a['id'] = document.id;
+        }).toList();
+
+        return Drawer(
+          child: Material(
+            color: kPrimaryColor,
+            child: ListView(
+              children: <Widget>[
+                for (int i = 0; i < storedocs.length; i++) ...[
+                  if (storedocs[i]['Email'] ==
+                      FirebaseAuth.instance.currentUser?.email) ...[
+                    buildHeader(
+                      name: storedocs[i]['Name'],
+                      email: storedocs[i]['Email'],
+                      onClicked: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => UserPage(
+                            name: storedocs[i]['Name'],
                           ),
-                          (route) => false);
-                    },
-                  ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
-              ),
+                Container(
+                  padding: padding,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      buildSearchField(),
+                      const SizedBox(height: 24),
+                      buildMenuItem(
+                        text: 'DashBoard',
+                        icon: Icons.dashboard,
+                        onClicked: () => selectedItem(context, 0),
+                      ),
+                      const SizedBox(height: 16),
+                      buildMenuItem(
+                        text: 'Profile',
+                        icon: Icons.person,
+                        onClicked: () => selectedItem(context, 1),
+                      ),
+                      const SizedBox(height: 16),
+                      buildMenuItem(
+                        text: 'Notifications',
+                        icon: Icons.notifications_outlined,
+                      ),
+                      const SizedBox(height: 16),
+                      buildMenuItem(
+                        text: 'Change Password',
+                        icon: Icons.password,
+                        onClicked: () => selectedItem(context, 3),
+                      ),
+                      const SizedBox(height: 24),
+                      Divider(color: Colors.white70),
+                      const SizedBox(height: 24),
+                      buildMenuItem(
+                        text: 'StudyDrive',
+                        icon: Icons.attach_file,
+                        onClicked: () => selectedItem(context, 4),
+                      ),
+                      const SizedBox(height: 16),
+                      buildMenuItem(
+                        text: 'Logout',
+                        icon: Icons.logout,
+                        onClicked: () async {
+                          await FirebaseAuth.instance.signOut();
+                          await storage.delete(key: "uid");
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Login(),
+                              ),
+                              (route) => false);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget buildHeader({
-    required String urlImage,
     required String name,
     required String email,
     required VoidCallback onClicked,
@@ -107,7 +133,10 @@ class NavigationDrawerWidget extends StatelessWidget {
           padding: padding.add(EdgeInsets.symmetric(vertical: 40)),
           child: Row(
             children: [
-              CircleAvatar(radius: 30, backgroundImage: NetworkImage(urlImage)),
+              CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage('assets/images/imageProfile.png'),
+              ),
               SizedBox(width: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,11 +153,11 @@ class NavigationDrawerWidget extends StatelessWidget {
                 ],
               ),
               Spacer(),
-              CircleAvatar(
+              /*CircleAvatar(
                 radius: 24,
                 backgroundColor: Color.fromRGBO(30, 60, 168, 1),
                 child: Icon(Icons.add_comment_outlined, color: Colors.white),
-              )
+              )*/
             ],
           ),
         ),

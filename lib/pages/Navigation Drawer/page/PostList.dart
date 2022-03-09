@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
 
@@ -48,17 +49,20 @@ class _PostListState extends State<PostList> {
                           children: [
                             Container(
                               margin: EdgeInsets.only(left: 10, top: 10),
-                              child: CircleAvatar(),
+                              child: CircleAvatar(
+                                radius: 22,
+                                backgroundImage: AssetImage(
+                                    'assets/images/imageProfile.png'),
+                              ),
                             ),
                             Container(
-                              margin:
-                                  EdgeInsets.only(left: 10, top: 10, right: 10),
+                              margin: EdgeInsets.only(left: 10, top: 10),
                               child: Text(
-                                "Misbah Uddin Tareq",
+                                storedocs[i]['Name'],
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Container(

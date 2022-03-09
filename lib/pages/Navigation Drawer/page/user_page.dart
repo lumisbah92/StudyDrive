@@ -3,12 +3,10 @@ import 'package:study_drive/constants.dart';
 
 class UserPage extends StatelessWidget {
   final String name;
-  final String urlImage;
 
   const UserPage({
     Key? key,
     required this.name,
-    required this.urlImage,
   }) : super(key: key);
 
   @override
@@ -19,8 +17,8 @@ class UserPage extends StatelessWidget {
           centerTitle: true,
 
         ),
-        body: Image.network(
-          urlImage,
+        body: Image.asset(
+          'assets/images/imageProfile.png',
           width: double.infinity,
           height: double.infinity,
           fit: BoxFit.cover,

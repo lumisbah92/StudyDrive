@@ -1,18 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
-  Profile({Key? key}) : super(key: key);
-
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-  final uid = FirebaseAuth.instance.currentUser!.uid;
-  final email = FirebaseAuth.instance.currentUser!.email;
-  final creationTime = FirebaseAuth.instance.currentUser!.metadata.creationTime;
-
   User? user = FirebaseAuth.instance.currentUser;
 
   verifyEmail() async {
@@ -33,42 +28,73 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
-      body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        child: Column(
-          children: [
-            Text(
-              'User ID: $uid',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            Row(
+    final Stream<QuerySnapshot> studentsStream =
+        FirebaseFirestore.instance.collection('UserList').snapshots();
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: studentsStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          print('Something went Wrong');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        final List storedocs = [];
+        snapshot.data!.docs.map((DocumentSnapshot document) {
+          Map a = document.data() as Map<String, dynamic>;
+          storedocs.add(a);
+          a['id'] = document.id;
+        }).toList();
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Profile'),
+          ),
+          body: Container(
+            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Column(
               children: [
-                Text(
-                  'Email: $email',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                user!.emailVerified
-                    ? Text(
-                        'verified',
-                        style:
-                            TextStyle(fontSize: 18.0, color: Colors.blueGrey),
-                      )
-                    : TextButton(
-                        onPressed: () => {verifyEmail()},
-                        child: Text('Verify Email'))
+                for (int i = 0; i < storedocs.length; i++) ...[
+                  if (storedocs[i]['Email'] ==
+                      FirebaseAuth.instance.currentUser?.email) ...[
+                    Text(
+                      storedocs[i]['Name'],
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                    Text(
+                      storedocs[i]['Email'],
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                    Row(
+                      children: [
+                        user!.emailVerified
+                            ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'verified',
+                            style: TextStyle(
+                                fontSize: 18.0, color: Colors.blueGrey),
+                          ),
+                        )
+                            : Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: TextButton(
+                              onPressed: () => {verifyEmail()},
+                              child: Text('Verify Email')),
+                        )
+                      ],
+                    ),
+                  ],
+                ],
               ],
             ),
-            Text(
-              'Created: $creationTime',
-              style: TextStyle(fontSize: 18.0),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
