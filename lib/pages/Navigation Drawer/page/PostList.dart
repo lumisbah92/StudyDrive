@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
+import 'package:study_drive/pages/Navigation Drawer/page/CommentPage.dart';
 
 class PostList extends StatefulWidget {
   PostList({Key? key}) : super(key: key);
@@ -13,6 +14,8 @@ class PostList extends StatefulWidget {
 class _PostListState extends State<PostList> {
   final Stream<QuerySnapshot> studentsStream =
       FirebaseFirestore.instance.collection('Posts').snapshots();
+
+  final String currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +37,16 @@ class _PostListState extends State<PostList> {
           storedocs.add(a);
           a['id'] = document.id;
         }).toList();
+
+        for (var i = 0; i < storedocs.length; i++) {
+          if (storedocs[i]['Likes'][currentUserID] == null)
+            FirebaseFirestore.instance
+                .collection('Posts')
+                .doc(storedocs[i]['id'])
+                .update({
+              'Likes.$currentUserID': false,
+            });
+        }
 
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
@@ -93,49 +106,97 @@ class _PostListState extends State<PostList> {
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 0, right: 40),
-                          alignment: Alignment.center,
-                          height: 20,
-                          width: MediaQuery.of(context).size.width * 0.33,
-                          child: Container(
-                            width: 100,
-                            child: Row(
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  //width: 30,
-                                  child: Icon(Icons.favorite_border,
-                                      color: Colors.blue),
+                          margin: EdgeInsets.only(left: 40),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    int LikeCount = storedocs[i]['Like Count'];
+                                    String PostID = storedocs[i]['id'];
+                                    if (storedocs[i]['Likes'][currentUserID] !=
+                                        true) {
+                                      setState(() {
+                                        storedocs[i]['Likes'][currentUserID] =
+                                            true;
+                                        LikeCount++;
+                                      });
+                                      FirebaseFirestore.instance
+                                          .collection('Posts')
+                                          .doc(PostID)
+                                          .update({
+                                        'Likes.$currentUserID': true,
+                                        'Like Count': LikeCount
+                                      });
+                                    } else {
+                                      setState(() {
+                                        storedocs[i]['Likes'][currentUserID] =
+                                            false;
+                                        LikeCount--;
+                                      });
+                                      FirebaseFirestore.instance
+                                          .collection('Posts')
+                                          .doc(PostID)
+                                          .update({
+                                        'Likes.$currentUserID': false,
+                                        'Like Count': LikeCount
+                                      });
+                                    }
+                                  },
+                                  child: Icon(
+                                    storedocs[i]['Likes'][currentUserID]
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    size: 30.0,
+                                    color: Colors.pink,
+                                  ),
                                 ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  //width: 30,
-                                  child: Text("Upvote"),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: Text(
+                                  storedocs[i]['Like Count'].toString(),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 0, left: 20),
+                          margin: EdgeInsets.only(top: 0, left: 100),
                           alignment: Alignment.center,
-                          height: 50,
+                          height: 25,
                           width: MediaQuery.of(context).size.width * 0.33,
                           child: Row(
                             children: [
-                              Container(
-                                alignment: Alignment.center,
-                                width: 30,
-                                child: Icon(Icons.add_comment,
-                                    color: Colors.black),
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => CommentPage(postID: storedocs[i]['id'],),
+                                    ));
+                                  },
+                                  child: Icon(Icons.comment),
+                                ),
                               ),
-                              Container(
-                                alignment: Alignment.center,
-                                child: Text("comment"),
-                              )
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => CommentPage(postID: storedocs[i]['id'],),
+                                    ));
+                                  },
+                                  child: Text(
+                                    "Comment",
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),

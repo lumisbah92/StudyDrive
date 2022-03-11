@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -5,6 +6,14 @@ import 'package:study_drive/pages/Navigation Drawer/page/dashboard.dart';
 import 'package:study_drive/pages/Welcome_Page/welcome_screen.dart';
 
 void main() {
+  /*FirebaseFirestore.instance.settings(timestampsInSnapshotsEnabled: true).then(
+    (_) {
+      print("Timestamps enabled in snapshots\n");
+    },
+    onError: (_) {
+      print("Error enabling timestamps in snapshots\n");
+    },
+  );*/
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
@@ -39,12 +48,14 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home: FutureBuilder(
             future: cheakLoginStatus(),
-            builder: (BuildContext context, AsyncSnapshot<bool> snapshot){
-              if(snapshot.data == false) return WelcomeScreen();
-              if(snapshot.connectionState == ConnectionState.waiting) {
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              if (snapshot.data == false) return WelcomeScreen();
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return Container(
                   color: Colors.white,
-                  child: Center(child: CircularProgressIndicator(),),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               }
               return Dashboard();

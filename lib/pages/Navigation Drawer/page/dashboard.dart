@@ -19,6 +19,7 @@ class _DashboardState extends State<Dashboard> {
   var post = "";
   final _formKey1 = GlobalKey<FormState>();
   var post1 = "";
+  Map likes = {FirebaseAuth.instance.currentUser?.uid.toString(): false};
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
@@ -49,6 +50,8 @@ class _DashboardState extends State<Dashboard> {
         .add({
       'Post': post,
       'Name': Name,
+      'Like Count': 0,
+      'Likes' : likes,
     })
         .then((value) => print('Post Added'))
         .catchError((error) => print('Failed to Add Post: $error'));
