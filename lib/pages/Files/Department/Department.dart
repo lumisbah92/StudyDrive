@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:study_drive/pages/Files/Department/list_department_page.dart';
-
 import '../../../../../constants.dart';
 
 class Department extends StatefulWidget {
@@ -32,13 +31,13 @@ class _DepartmentState extends State<Department> {
 
   // Adding Student
   CollectionReference students =
-      FirebaseFirestore.instance.collection('DepartmentList');
+  FirebaseFirestore.instance.collection('DepartmentList');
 
   Future<void> addUser() {
     return students
         .add({
-          'Department Name': department,
-        })
+      'Department Name': department,
+    })
         .then((value) => print('Department Added'))
         .catchError((error) => print('Failed to Add Department: $error'));
   }
@@ -70,6 +69,7 @@ class _DepartmentState extends State<Department> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
+
                           // Department name field
                           margin: EdgeInsets.only(top: 10),
                           padding: EdgeInsets.symmetric(
@@ -79,6 +79,7 @@ class _DepartmentState extends State<Department> {
                             color: kPrimaryLightColor,
                             borderRadius: BorderRadius.circular(29),
                           ),
+
                           child: TextFormField(
                             autofocus: false,
                             cursorColor: kPrimaryColor,
@@ -105,7 +106,24 @@ class _DepartmentState extends State<Department> {
                           height: 12,
                         ),
                         ElevatedButton(
-                          child: Text('Submit'),
+
+                          child: Text("Add"),
+                          style: ElevatedButton.styleFrom(
+
+                            primary: kPrimaryColor,
+
+                            side: BorderSide(color: Colors.black, width: 0.4),
+                            elevation: 10,
+                            minimumSize: Size(100,40),
+
+                            shape: BeveledRectangleBorder(
+                                side: BorderSide(
+                                    color: Colors.white,
+                                    width: 1
+                                ),
+                                borderRadius: BorderRadius.circular(6.5)
+                            ),
+                          ),
                           onPressed: () {
                             Navigator.of(context).pop;
                             if (_formKey.currentState!.validate()) {

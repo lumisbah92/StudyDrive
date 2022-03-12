@@ -121,7 +121,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            child: Text("Send Email"),
+                            child: Text("Change Password"),
                             style: ElevatedButton.styleFrom(
                               onPrimary: Colors.white,
                               primary: kPrimaryColor,
@@ -130,12 +130,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                               elevation: 20,
                               minimumSize: Size(140,40),
                               shadowColor: Colors.teal,
-                              shape: BeveledRectangleBorder(
+                              shape: RoundedRectangleBorder(
                                   side: BorderSide(
                                       color: Colors.white,
                                       width: 1
                                   ),
-                                  borderRadius: BorderRadius.circular(10)
+                                  borderRadius: BorderRadius.circular(30)
                               ),
                             ),
                             onPressed:() {
@@ -157,21 +157,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
                       ),
                     ),
-                    TextButton(
-                      onPressed: () => {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder: (context, a, b) => Login(),
-                              transitionDuration: Duration(seconds: 0),
-                            ),
-                                (route) => false)
-                      },
-                      child: Text(
-                        'Login',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                    ),
+
 
                   ],
                 ),

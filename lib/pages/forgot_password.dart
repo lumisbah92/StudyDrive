@@ -127,7 +127,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            child: Text("Send Email"),
+                            child: Text("Reset"),
                             style: ElevatedButton.styleFrom(
                               onPrimary: Colors.white,
                               primary: kPrimaryColor,
@@ -136,6 +136,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               elevation: 20,
                               minimumSize: Size(140,40),
                               shadowColor: Colors.teal,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.white,
+                                      width: 1
+                                  ),
+                                  borderRadius: BorderRadius.circular(30)
+                              ),
                             ),
                             onPressed:() {
                               {

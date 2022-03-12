@@ -42,7 +42,7 @@ class _CoursesState extends State<Courses> {
   FirebaseFirestore.instance.collection('Departments').doc(widget.department.toString()).collection('Courses');*/
   AddDepartment() async{
     courses =
-    FirebaseFirestore.instance.collection('CoursesList').doc(widget.department.toString()).collection(widget.semisters);
+        FirebaseFirestore.instance.collection('CoursesList').doc(widget.department.toString()).collection(widget.semisters);
     courses
         .add({
       'Course': course,
@@ -65,6 +65,8 @@ class _CoursesState extends State<Courses> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+
+
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: kPrimaryColor,
           icon: Icon(Icons.add),
@@ -86,6 +88,7 @@ class _CoursesState extends State<Courses> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
+
                           // Course name field
                           margin: EdgeInsets.only(top: 10),
                           padding:
@@ -121,7 +124,24 @@ class _CoursesState extends State<Courses> {
                           height: 12,
                         ),
                         ElevatedButton(
-                          child: Text('Submit'),
+
+                          child: Text("Add"),
+                          style: ElevatedButton.styleFrom(
+
+                            primary: kPrimaryColor,
+
+                            side: BorderSide(color: Colors.black, width: 0.4),
+                            elevation: 10,
+                            minimumSize: Size(100,40),
+
+                            shape: BeveledRectangleBorder(
+                                side: BorderSide(
+                                    color: Colors.white,
+                                    width: 1
+                                ),
+                                borderRadius: BorderRadius.circular(6.5)
+                            ),
+                          ),
                           onPressed: () {
                             Navigator.of(context).pop;
                             if (_formKey.currentState!.validate()) {
@@ -144,7 +164,25 @@ class _CoursesState extends State<Courses> {
             );
           },
         ),
-        body: ListCoursesPage(department: widget.department, semisters: widget.semisters, id: widget.id),
+        body: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  stops: [
+                    0.26,
+                    0.20,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF0a5275),
+                    Color(0xFFd1d1d1),
+                  ],
+                )
+            ),
+            child: ListCoursesPage(department: widget.department, semisters: widget.semisters, id: widget.id)
+        ),
+
       ),
     );
   }

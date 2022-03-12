@@ -48,11 +48,17 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
           a['id'] = document.id;
         }).toList();
 
+
+
         return Container(
+
+
           margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: SingleChildScrollView(
+
             scrollDirection: Axis.vertical,
             child: Column(
+
               children: [
                 Column(
                   children: [
@@ -65,12 +71,12 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
                           Text(
                             "Leading University",
                             style:
-                            TextStyle(fontSize: 28.0, color: Colors.black),
+                            TextStyle(fontSize: 28.0, color: Colors.white),
                           ),
                           Text(
                             widget.department,
                             style:
-                                TextStyle(fontSize: 25.0, color: Colors.black),
+                            TextStyle(fontSize: 25.0, color: Colors.white),
                           ),
                           Padding(
                             padding: EdgeInsets.all(2),
@@ -78,21 +84,28 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
                           Text(
                             widget.semisters,
                             style:
-                                TextStyle(fontSize: 22.0, color: Colors.black),
+                            TextStyle(fontSize: 22.0, color: Colors.white54),
                           ),
                           Text(
                             "Courses",
                             style:
-                                TextStyle(fontSize: 20.0, color: Colors.black),
+                            TextStyle(fontSize: 20.0, color: Colors.white),
                           ),
                         ],
                       ),
                     ),
                   ],
                 ),
-                Padding(padding: EdgeInsets.only(top: 10)),
+                Padding(padding: EdgeInsets.only(top: 29)),
                 for (var i = 0; i < storedocs.length; i++) ...[
                   Card(
+                    shape: BeveledRectangleBorder(
+                      borderRadius: BorderRadius.circular(08.0),
+                      side: BorderSide(
+                        color: Color(0xFF0a5275),
+                        width: 0.4,
+                      ),
+                    ),
                     child: ListTile(
                       title: Text(
                         storedocs[i]['Course'],

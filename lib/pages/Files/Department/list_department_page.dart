@@ -14,7 +14,7 @@ class ListDepartmentPage extends StatefulWidget {
 
 class _ListDepartmentPageState extends State<ListDepartmentPage> {
   final Stream<QuerySnapshot> studentsStream =
-      FirebaseFirestore.instance.collection('DepartmentList').snapshots();
+  FirebaseFirestore.instance.collection('DepartmentList').snapshots();
 
   /*// For Deleting User
   CollectionReference students =
@@ -50,39 +50,50 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
         }).toList();
 
         return Scaffold(
-          backgroundColor: gradientEndColor,
+          backgroundColor: Color(0xFFd1d1d1),
           body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [gradientStartColor, gradientEndColor],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [0.3, 0.7])),
+                    stops: [
+                      0.27,
+                      0.54,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF0a5275),
+                      Color(0xFFd1d1d1),
+                    ],
+                  )
+              ),
               child: SafeArea (
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(32.0),
+                      padding: const EdgeInsets.only(top: 5.0, left: 110.0, right: 10.0),
                       child: Column(
                         children: <Widget>[
-                          Text(
-                            'Study Drive',
-                            style: TextStyle(
-                              fontFamily: 'Avenir',
-                              fontSize: 44,
-                              color: const Color(0xffffffff),
-                              fontWeight: FontWeight.w900,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Text(
+                              'Study Drive',
+                              style: TextStyle(
+                                fontFamily: 'Avenir',
+                                fontSize: 38,
+                                color: const Color(0xffffffff),
+                                fontWeight: FontWeight.w900,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
-                            textAlign: TextAlign.left,
                           ),
                           Text(
                             'Deparments',
                             style: TextStyle(
                               fontFamily: 'Avenir',
-                              fontSize: 35,
+                              fontSize: 28,
                               color: const Color(0xffffffff),
                               fontWeight: FontWeight.w900,
                             ),
@@ -92,7 +103,7 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                             'Leading University,Sylhet',
                             style: TextStyle(
                               fontFamily: 'Avenir',
-                              fontSize: 24,
+                              fontSize: 16,
                               color: const Color(0x7cdbf1ff),
                               fontWeight: FontWeight.w500,
                             ),
@@ -103,7 +114,7 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                     ),
                     Container(
                       height: 500,
-                      padding: const EdgeInsets.only(left: 32,bottom: 25),
+                      padding: const EdgeInsets.only(left: 32,bottom: 60),
                       child: Swiper(
                         itemCount: storedocs.length,
                         itemWidth: MediaQuery.of(context).size.width - 2 * 54,
@@ -175,7 +186,7 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                                   right: 24,
                                   bottom: 60,
                                   child: Text(
-                                  (index+1).toString(),
+                                    (index+1).toString(),
                                     style: TextStyle(
                                       fontFamily: 'Avenir',
                                       fontSize: 200,

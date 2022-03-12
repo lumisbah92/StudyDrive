@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-const kPrimaryColor = Colors.indigo;
+const kPrimaryColor = Color(0xFF0A5275);
+
 const kPrimaryLightColor = Color(0xFFF1E6FF);
+
+const newcolor = Color.fromRGBO(2,0,36, 0.1);
 
 Color primaryTextColor = Color(0xFF414C6B);
 Color secondaryTextColor = Color(0xFFE4979E);

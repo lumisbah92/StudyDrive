@@ -200,6 +200,23 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
+                            child: Text("Login"),
+                            style: ElevatedButton.styleFrom(
+                              onPrimary: Colors.white,
+                              primary: kPrimaryColor,
+                              onSurface: Colors.grey,
+                              side: BorderSide(color: Colors.black, width: 1),
+                              elevation: 20,
+                              minimumSize: Size(140,40),
+                              shadowColor: Colors.teal,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.white,
+                                      width: 1
+                                  ),
+                                  borderRadius: BorderRadius.circular(30)
+                              ),
+                            ),
                             onPressed: () {
                               // Validate returns true if the form is valid, otherwise false.
                               if (_formKey.currentState!.validate()) {
@@ -210,10 +227,6 @@ class _LoginState extends State<Login> {
                                 userLogin();
                               }
                             },
-                            child: Text(
-                              'Login',
-                              style: TextStyle(fontSize: 18.0),
-                            ),
                           ),
                         ],
                       ),

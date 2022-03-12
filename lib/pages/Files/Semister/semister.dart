@@ -34,6 +34,21 @@ class _SemisterState extends State<Semister> {
     return SafeArea(
       child: Scaffold(
         body: Container(
+
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                stops: [
+                  0.20,
+                  0.10,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF0a5275),
+                  Color(0xFFe0e0e0),
+                ],
+              )
+          ),
           //margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -46,22 +61,23 @@ class _SemisterState extends State<Semister> {
                     ),
                     Text(
                       "Leading University",
-                      style: TextStyle(fontSize: 25.0, color: Colors.black),
+                      style: TextStyle(fontSize: 25.0, color: Colors.white),
                     ),
                     Padding(
                       padding: EdgeInsets.all(2),
                     ),
                     Text(
                       widget.department,
-                      style: TextStyle(fontSize: 22.0, color: Colors.black),
+                      style: TextStyle(fontSize: 22.0, color: Colors.white),
                     ),
                     Text(
                       "Semisters",
-                      style: TextStyle(fontSize: 20.0, color: Colors.black),
+                      style: TextStyle(fontSize: 20.0, color: Colors.white70),
                     ),
                   ],
                 ),
                 Container(
+
                   child: Padding(
                     padding: EdgeInsets.only(
                       top: 40,
@@ -69,43 +85,64 @@ class _SemisterState extends State<Semister> {
                       left: 20,
                       right: 20,
                     ),
+
                     child: StaggeredGridView.countBuilder(
+
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       physics: ScrollPhysics(),
                       crossAxisCount: 2,
                       itemCount: semisters.length,
                       staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 15,
+
+
                       itemBuilder: (BuildContext context, int index) => Card(
-                        child: ListTile(
-                          title: Text(
-                            semisters[index],
-                            style: TextStyle(fontSize: 18.0),
+                        shape: BeveledRectangleBorder(
+                          borderRadius: BorderRadius.circular(08.0),
+                          side: BorderSide(
+                            color: Color(0xFF0a5275),
+                            width: 0.4,
                           ),
-                          tileColor: kPrimaryLightColor,
-                          trailing: SizedBox(
-                            width: 30,
-                            height: 40,
-                            child: PopupMenuButton(
-                              itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  child: Text("Edit Semister"),
-                                ),
-                                PopupMenuItem(
-                                  child: Text("Delete Semister"),
-                                ),
-                              ],
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => Courses(department: widget.department, semisters: semisters[index], id: widget.id),
+                        ),
+
+                        child: SizedBox(
+
+                          height: 85,
+                          width: 80.0,
+                          child: ListTile(
+
+                            title: Padding(
+                              padding: const EdgeInsets.only(top:17.0),
+                              child: Text(
+                                semisters[index],
+                                style: TextStyle(fontSize: 18.0),
                               ),
-                            );
-                          },
+                            ),
+                            tileColor: kPrimaryLightColor,
+                            trailing: SizedBox(
+                              width: 30,
+                              height: 85,
+                              child: PopupMenuButton(
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    child: Text("Edit Semister"),
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text("Delete Semister"),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => Courses(department: widget.department, semisters: semisters[index], id: widget.id),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
