@@ -57,7 +57,11 @@ class _ChangePasswordState extends State<ChangePassword> {
       ),
       body:
       Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Container(
+            margin: EdgeInsets.only(top: 20.0),
+          ),
           Positioned(
             bottom: 0,
             left: 0,
@@ -66,23 +70,18 @@ class _ChangePasswordState extends State<ChangePassword> {
               width: size.width * 0.50,
             ),
           ),
-
-          Container(
-            margin: EdgeInsets.only(top: 8.0),
-
-          ),
           Expanded(
             child: Form(
               key: _formKey,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                padding: EdgeInsets.only(top: 5, left: 20, right: 20),
                 child: ListView(
                   children: [
                     Container(
                       // email field
-                      margin: EdgeInsets.only(top: 10),
+                      margin: EdgeInsets.only(top: 2),
                       padding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      EdgeInsets.only(top: 5, left: 20, right: 20),
                       width: size.width * 0.8,
                       decoration: BoxDecoration(
                         color: kPrimaryLightColor,

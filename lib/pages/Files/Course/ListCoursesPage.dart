@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Files/AllFiles/ShowFiles/showFile.dart';
@@ -14,6 +15,25 @@ class ListCoursesPage extends StatefulWidget {
 }
 
 class _ListCoursesPageState extends State<ListCoursesPage> {
+
+  String role = 'user';
+
+  void initState() {
+    super.initState();
+    _checkRole();
+  }
+
+  void _checkRole() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    final DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('UserList')
+        .doc(user?.uid)
+        .get();
+
+    setState(() {
+      role = snap['role'];
+    });
+  }
 
   /*// For Deleting User
   CollectionReference students =
@@ -117,7 +137,7 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
                         height: 30,
                         child: Icon(Icons.school, color: Colors.black87),
                       ),
-                      trailing: SizedBox(
+                      trailing: (role == 'admin') ? SizedBox(
                         width: 30,
                         height: 30,
                         child: PopupMenuButton(
@@ -130,7 +150,7 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
                             ),
                           ],
                         ),
-                      ),
+                      ) : null,
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(

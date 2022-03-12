@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Files/Course/ListCoursesPage.dart';
@@ -14,9 +15,24 @@ class Courses extends StatefulWidget {
 }
 
 class _CoursesState extends State<Courses> {
+  String role = 'user';
 
-  /*String department, semisters, id;
-  _CoursesState({required this.department, required this.semisters, required this.id});*/
+  void initState() {
+    super.initState();
+    _checkRole();
+  }
+
+  void _checkRole() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    final DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('UserList')
+        .doc(user?.uid)
+        .get();
+
+    setState(() {
+      role = snap['role'];
+    });
+  }
 
   final _formKey = GlobalKey<FormState>();
   var course = "";
@@ -66,8 +82,7 @@ class _CoursesState extends State<Courses> {
     return SafeArea(
       child: Scaffold(
 
-
-        floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: (role == 'admin') ? FloatingActionButton.extended(
           backgroundColor: kPrimaryColor,
           icon: Icon(Icons.add),
           label: Text("Add Course"),
@@ -163,7 +178,7 @@ class _CoursesState extends State<Courses> {
               ),
             );
           },
-        ),
+        ) : null,
         body: Container(
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(

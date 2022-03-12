@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:study_drive/constants.dart';
+import 'package:study_drive/pages/Signup/VerifyEmail.dart';
 import 'package:study_drive/pages/Signup/components/or_divider.dart';
 import 'package:study_drive/pages/Signup/components/social_icon.dart';
 import 'package:study_drive/pages/Login/login.dart';
@@ -41,20 +42,6 @@ class _SignupState extends State<Signup> {
     super.dispose();
   }
 
-  CollectionReference students =
-      FirebaseFirestore.instance.collection('UserList');
-
-  Future<void> addUser() {
-    return students
-        .add({
-          'Name': name,
-          'Email': email,
-          'Password': password,
-        })
-        .then((value) => print('User Added'))
-        .catchError((error) => print('Failed to Add User: $error'));
-  }
-
   registration() async {
     if (password == confirmPassword) {
       try {
@@ -65,16 +52,26 @@ class _SignupState extends State<Signup> {
           SnackBar(
             backgroundColor: Colors.redAccent,
             content: Text(
-              "Registered Successfully. Please Login..",
+              "Registered Successfully. Please Verify Email..",
               style: TextStyle(fontSize: 20.0),
             ),
           ),
         );
-        addUser();
+        User? user = FirebaseAuth.instance.currentUser;
+        FirebaseFirestore.instance.collection('UserList').doc(user?.uid)
+            .set({
+          'uid': user?.uid,
+          'Name': name,
+          'Email': email,
+          'Password': password,
+          'role': 'user',
+        })
+            .then((value) => print('User Added'))
+            .catchError((error) => print('Failed to Add User: $error'));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Login(),
+            builder: (context) => VerifyEmail(),
           ),
         );
       } on FirebaseAuthException catch (e) {

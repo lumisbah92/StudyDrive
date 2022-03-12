@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:study_drive/constants.dart';
+import 'package:study_drive/pages/Navigation%20Drawer/page/profile.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class CommentPage extends StatefulWidget {
-  String postID;
+  String postID, Name;
 
-  CommentPage({required this.postID});
+  CommentPage({required this.postID, required this.Name});
 
   @override
   State<CommentPage> createState() => _CommentPageState();
@@ -35,11 +37,13 @@ class _CommentPageState extends State<CommentPage> {
           );
         }
 
-       List<Comment> comments = [];
+        List<Comment> comments = [];
         snapshot.data?.docs.forEach((doc) {
           comments.add(Comment.fromDocument(doc));
         });
-        return ListView(children: comments,);
+        return ListView(
+          children: comments,
+        );
       },
     );
   }
@@ -48,7 +52,8 @@ class _CommentPageState extends State<CommentPage> {
     commentRefs.doc(widget.postID).collection("Comments").add({
       "userID": FirebaseAuth.instance.currentUser?.uid,
       "comment": commentController.text,
-     // "timestamp": timestamp,
+      "Name": widget.Name,
+      // "timestamp": timestamp,
     });
     commentController.clear();
   }
@@ -96,11 +101,14 @@ class _CommentPageState extends State<CommentPage> {
 class Comment extends StatelessWidget {
   final String comment;
   final String userID;
+  final String Name;
+
   //final String timestamp;
 
   Comment({
     required this.comment,
     required this.userID,
+    required this.Name,
     //required this.timestamp,
   });
 
@@ -108,7 +116,8 @@ class Comment extends StatelessWidget {
     return Comment(
       comment: doc['comment'],
       userID: doc['userID'],
-     // timestamp: doc['timestamp'],
+      Name: doc['Name'],
+      // timestamp: doc['timestamp'],
     );
   }
 
@@ -116,13 +125,66 @@ class Comment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        ListTile(
-          title: Text('$comment'),
-          leading: CircleAvatar(
-            radius: 22,
-            backgroundImage: AssetImage('assets/images/imageProfile.png'),
+        Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+          child: ListTile(
+            title: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Profile(
+                      Name: Name,
+                    ),
+                  ),
+                );
+              },
+              child: Text(
+                '$Name',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent),
+              ),
+            ),
+            subtitle: Text(
+              '$comment',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+            tileColor: kPrimaryLightColor,
+            trailing: SizedBox(
+              width: 30,
+              height: 85,
+              child: PopupMenuButton(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: Text("Edit Comment"),
+                  ),
+                  PopupMenuItem(
+                    child: Text("Delete Comment"),
+                  ),
+                ],
+              ),
+            ),
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Profile(
+                      Name: Name,
+                    ),
+                  ),
+                );
+              },
+              child: CircleAvatar(
+                radius: 22,
+                backgroundImage: AssetImage('assets/images/imageProfile.png'),
+              ),
+            ),
+            //subtitle: Text(timeago.format(timestamp.toDate())),
           ),
-          //subtitle: Text(timeago.format(timestamp.toDate())),
         ),
         Divider(),
       ],

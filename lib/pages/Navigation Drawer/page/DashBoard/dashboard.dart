@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Files/Department/Department.dart';
 import 'package:study_drive/pages/Navigation Drawer/navigation_drawer_widget.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/PostList.dart';
+import 'package:study_drive/pages/Navigation%20Drawer/page/DashBoard/PostList.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard({Key? key}) : super(key: key);
@@ -40,19 +40,18 @@ class _DashboardState extends State<Dashboard> {
   }
 
   // Adding Student
-  CollectionReference students =
-  FirebaseFirestore.instance.collection('Posts');
+  CollectionReference students = FirebaseFirestore.instance.collection('Posts');
   final Stream<QuerySnapshot> UserList =
-  FirebaseFirestore.instance.collection('UserList').snapshots();
+      FirebaseFirestore.instance.collection('UserList').snapshots();
 
   Future<void> addUser(var Name) {
     return students
         .add({
-      'Post': post,
-      'Name': Name,
-      'Like Count': 0,
-      'Likes' : likes,
-    })
+          'Post': post,
+          'Name': Name,
+          'Like Count': 0,
+          'Likes': likes,
+        })
         .then((value) => print('Post Added'))
         .catchError((error) => print('Failed to Add Post: $error'));
   }
@@ -60,10 +59,9 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return  StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<QuerySnapshot>(
       stream: UserList,
-      builder:
-          (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           print('Something went Wrong');
         }
@@ -82,8 +80,9 @@ class _DashboardState extends State<Dashboard> {
 
         return Scaffold(
           appBar: AppBar(
-              title: Text('DashBoard',)
-          ),
+              title: Text(
+            'DashBoard',
+          )),
           drawer: NavigationDrawerWidget(),
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: kPrimaryColor,
@@ -137,7 +136,8 @@ class _DashboardState extends State<Dashboard> {
                           Container(
                             child: CircleAvatar(
                               radius: 25,
-                              backgroundImage: AssetImage('assets/images/imageProfile.png'),
+                              backgroundImage:
+                                  AssetImage('assets/images/imageProfile.png'),
                             ),
                             margin: EdgeInsets.only(left: 10),
                           ),
@@ -163,45 +163,58 @@ class _DashboardState extends State<Dashboard> {
                                           key: _formKey,
                                           child: Dialog(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(20),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   Container(
                                                     // Department name field
-                                                    margin: EdgeInsets.only(top: 10),
-                                                    padding: EdgeInsets.symmetric(
-                                                        horizontal: 20, vertical: 2),
+                                                    margin: EdgeInsets.only(
+                                                        top: 10),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20,
+                                                            vertical: 2),
                                                     width: size.width * 0.8,
                                                     decoration: BoxDecoration(
                                                       color: kPrimaryLightColor,
                                                       borderRadius:
-                                                      BorderRadius.circular(29),
+                                                          BorderRadius.circular(
+                                                              29),
                                                     ),
                                                     child: TextFormField(
                                                       autofocus: false,
-                                                      cursorColor: kPrimaryColor,
-                                                      decoration: InputDecoration(
+                                                      cursorColor:
+                                                          kPrimaryColor,
+                                                      decoration:
+                                                          InputDecoration(
                                                         icon: Icon(
                                                           Icons.edit,
                                                           color: kPrimaryColor,
                                                         ),
-                                                        hintText: 'Write Something ',
-                                                        border: InputBorder.none,
+                                                        hintText:
+                                                            'Write Something ',
+                                                        border:
+                                                            InputBorder.none,
                                                         errorStyle: TextStyle(
-                                                            color: Colors.redAccent,
+                                                            color: Colors
+                                                                .redAccent,
                                                             fontSize: 15),
                                                       ),
-                                                      keyboardType: TextInputType.multiline,
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .multiline,
                                                       maxLines: 10,
                                                       minLines: 1,
                                                       controller:
-                                                      postController,
+                                                          postController,
                                                       validator: (value) {
                                                         if (value == null ||
                                                             value.isEmpty) {
@@ -215,30 +228,46 @@ class _DashboardState extends State<Dashboard> {
                                                     height: 12,
                                                   ),
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Padding(
-                                                        padding: const EdgeInsets.all(8.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: IconButton(
-                                                          icon: Icon(Icons.attach_file),
-                                                          onPressed: (){
-
-                                                          },
+                                                          icon: Icon(Icons
+                                                              .attach_file),
+                                                          onPressed: () {},
                                                         ),
                                                       ),
-                                                      for (var i = 0; i < userList.length; i++) ...[
-                                                        if (userList[i]['Email'] ==
-                                                            FirebaseAuth.instance.currentUser?.email) ...[
+                                                      for (var i = 0;
+                                                          i < userList.length;
+                                                          i++) ...[
+                                                        if (userList[i]
+                                                                ['Email'] ==
+                                                            FirebaseAuth
+                                                                .instance
+                                                                .currentUser
+                                                                ?.email) ...[
                                                           ElevatedButton(
                                                             child: Text('Post'),
                                                             onPressed: () {
-                                                              Navigator.of(context).pop;
-                                                              if (_formKey.currentState!
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop;
+                                                              if (_formKey
+                                                                  .currentState!
                                                                   .validate()) {
                                                                 setState(
-                                                                      () {
-                                                                    post = postController.text;
-                                                                    addUser(userList[i]['Name']);
+                                                                  () {
+                                                                    post =
+                                                                        postController
+                                                                            .text;
+                                                                    addUser(userList[
+                                                                            i][
+                                                                        'Name']);
                                                                     clearText();
                                                                   },
                                                                 );
@@ -259,7 +288,8 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                   hintText: "Write Something",
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
                                   ),
                                   fillColor: kPrimaryLightColor,
                                   errorStyle: TextStyle(
@@ -290,20 +320,21 @@ class _DashboardState extends State<Dashboard> {
                         padding: EdgeInsets.only(
                           right: 20,
                         ),
-                        child:Container(
+                        child: Container(
                           child: Container(
                             child: Column(
                               children: [
                                 for (var i = 0; i < userList.length; i++) ...[
                                   if (userList[i]['Email'] ==
-                                      FirebaseAuth.instance.currentUser?.email) ...[
+                                      FirebaseAuth
+                                          .instance.currentUser?.email) ...[
                                     ElevatedButton(
                                       child: const Text('Post'),
                                       onPressed: () {
                                         if (_formKey1.currentState!
                                             .validate()) {
                                           setState(
-                                                () {
+                                            () {
                                               post = postController1.text;
                                               addUser(userList[i]['Name']);
                                               clearText();

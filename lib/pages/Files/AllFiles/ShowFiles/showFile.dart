@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,20 +21,34 @@ class showFiles extends StatefulWidget {
 }
 
 class _showFilesState extends State<showFiles> {
-  late Future<List<FirebaseFile>> futureFiles;
+  String role = 'user';
 
-  @override
   void initState() {
     super.initState();
     String CourseName = widget.Course;
     futureFiles = FirebaseApi.listAll('$CourseName');
+    _checkRole();
   }
+
+  void _checkRole() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    final DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('UserList')
+        .doc(user?.uid)
+        .get();
+
+    setState(() {
+      role = snap['role'];
+    });
+  }
+
+  late Future<List<FirebaseFile>> futureFiles;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
     child: Scaffold(
-          floatingActionButton: FloatingActionButton.extended(
+          floatingActionButton: (role == 'admin') ? FloatingActionButton.extended(
             backgroundColor: kPrimaryColor,
             icon: Icon(Icons.cloud_upload_sharp),
             label: Text("Upload Files"),
@@ -43,7 +59,7 @@ class _showFilesState extends State<showFiles> {
                 ),
               );
             },
-          ),
+          ) : null,
           body: FutureBuilder<List<FirebaseFile>>(
             future: futureFiles,
             builder: (context, snapshot) {
@@ -133,7 +149,7 @@ class _showFilesState extends State<showFiles> {
               );
             },
 
-            trailing: SizedBox(
+            trailing: (role == 'admin') ? SizedBox(
               width: 30,
               height: 40,
               child: PopupMenuButton(
@@ -146,7 +162,7 @@ class _showFilesState extends State<showFiles> {
                   ),
                 ],
               ),
-            ),
+            ) : null ,
           ),
         ),
       );

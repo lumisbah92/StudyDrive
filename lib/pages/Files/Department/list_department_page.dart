@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -13,6 +14,25 @@ class ListDepartmentPage extends StatefulWidget {
 }
 
 class _ListDepartmentPageState extends State<ListDepartmentPage> {
+  String role = 'user';
+
+  void initState() {
+    super.initState();
+    _checkRole();
+  }
+
+  void _checkRole() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    final DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('UserList')
+        .doc(user?.uid)
+        .get();
+
+    setState(() {
+      role = snap['role'];
+    });
+  }
+
   final Stream<QuerySnapshot> studentsStream =
   FirebaseFirestore.instance.collection('DepartmentList').snapshots();
 
@@ -144,35 +164,51 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                                         borderRadius: BorderRadius.circular(32),
                                       ),
                                       color: Colors.white,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(32.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            SizedBox(height: 100,width: 250,),
-                                            Text(
-                                              storedocs[index]['Department Name'],
-                                              style: TextStyle(
-                                                fontFamily: 'Avenir',
-                                                fontSize: 44,
-                                                color: const Color(0xff47455f),
-                                                fontWeight: FontWeight.w900,
+                                      child: ListTile(
+                                        trailing: (role == 'admin') ? SizedBox(
+                                          width: 30,
+                                          height: 85,
+                                          child: PopupMenuButton(
+                                            itemBuilder: (context) => [
+                                              PopupMenuItem(
+                                                child: Text("Edit Semister"),
                                               ),
-                                              textAlign: TextAlign.left,
-                                            ),
-                                            Text(
-                                              'Department',
-                                              style: TextStyle(
-                                                fontFamily: 'Avenir',
-                                                fontSize: 23,
-                                                color: primaryTextColor,
-                                                fontWeight: FontWeight.w500,
+                                              PopupMenuItem(
+                                                child: Text("Delete Semister"),
                                               ),
-                                              textAlign: TextAlign.left,
-                                            ),
-                                            SizedBox(height: 32),
-                                          ],
+                                            ],
+                                          ),
+                                        ) : null,
+                                        title: Padding(
+                                          padding: const EdgeInsets.all(32.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              SizedBox(height: 100,width: 250,),
+                                              Text(
+                                                storedocs[index]['Department Name'],
+                                                style: TextStyle(
+                                                  fontFamily: 'Avenir',
+                                                  fontSize: 44,
+                                                  color: const Color(0xff47455f),
+                                                  fontWeight: FontWeight.w900,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                              Text(
+                                                'Department',
+                                                style: TextStyle(
+                                                  fontFamily: 'Avenir',
+                                                  fontSize: 23,
+                                                  color: primaryTextColor,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                              SizedBox(height: 32),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),

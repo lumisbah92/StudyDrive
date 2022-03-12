@@ -5,20 +5,27 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Files/Department/Department.dart';
 import 'package:study_drive/pages/Login/login.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/dashboard.dart';
+import 'package:study_drive/pages/Navigation%20Drawer/page/DashBoard/dashboard.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/profile.dart';
-import 'package:study_drive/pages/Navigation Drawer/page/user_page.dart';
 import 'package:study_drive/pages/Navigation Drawer/page/change_password.dart';
+import 'package:study_drive/pages/Navigation%20Drawer/page/EditProfile.dart';
 
-class NavigationDrawerWidget extends StatelessWidget {
+class NavigationDrawerWidget extends StatefulWidget {
+  const NavigationDrawerWidget({Key? key}) : super(key: key);
+
+  @override
+  State<NavigationDrawerWidget> createState() => _NavigationDrawerWidgetState();
+}
+
+class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
+
   final padding = EdgeInsets.symmetric(horizontal: 20);
   final storage = new FlutterSecureStorage();
-
+  String name="";
   @override
   Widget build(BuildContext context) {
     final Stream<QuerySnapshot> studentsStream =
-        FirebaseFirestore.instance.collection('UserList').snapshots();
-
+    FirebaseFirestore.instance.collection('UserList').snapshots();
     return StreamBuilder<QuerySnapshot>(
       stream: studentsStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -38,11 +45,17 @@ class NavigationDrawerWidget extends StatelessWidget {
           a['id'] = document.id;
         }).toList();
 
+        for (int i = 0; i < storedocs.length; i++) {
+          if (storedocs[i]['Email'] ==
+              FirebaseAuth.instance.currentUser?.email)
+            name = storedocs[i]['Name'];
+        }
+
         return Drawer(
           child: Material(
             color: kPrimaryColor,
             child: ListView(
-              children: <Widget>[
+              children: [
                 for (int i = 0; i < storedocs.length; i++) ...[
                   if (storedocs[i]['Email'] ==
                       FirebaseAuth.instance.currentUser?.email) ...[
@@ -51,8 +64,8 @@ class NavigationDrawerWidget extends StatelessWidget {
                       email: storedocs[i]['Email'],
                       onClicked: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => UserPage(
-                            name: storedocs[i]['Name'],
+                          builder: (context) => Profile(
+                            Name: storedocs[i]['Name'],
                           ),
                         ),
                       ),
@@ -65,6 +78,9 @@ class NavigationDrawerWidget extends StatelessWidget {
                     children: [
                       const SizedBox(height: 12),
                       buildSearchField(),
+                      Divider(
+                        color: Colors.white70,
+                      ),
                       const SizedBox(height: 24),
                       buildMenuItem(
                         text: 'DashBoard',
@@ -73,14 +89,15 @@ class NavigationDrawerWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       buildMenuItem(
-                        text: 'Profile',
-                        icon: Icons.person,
+                        text: 'StudyDrive',
+                        icon: Icons.attach_file,
                         onClicked: () => selectedItem(context, 1),
                       ),
                       const SizedBox(height: 16),
                       buildMenuItem(
-                        text: 'Notifications',
-                        icon: Icons.notifications_outlined,
+                        text: 'Edit Profile',
+                        icon: Icons.person,
+                        onClicked: () => selectedItem(context, 2),
                       ),
                       const SizedBox(height: 16),
                       buildMenuItem(
@@ -90,12 +107,6 @@ class NavigationDrawerWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
                       Divider(color: Colors.white70),
-                      const SizedBox(height: 24),
-                      buildMenuItem(
-                        text: 'StudyDrive',
-                        icon: Icons.attach_file,
-                        onClicked: () => selectedItem(context, 4),
-                      ),
                       const SizedBox(height: 16),
                       buildMenuItem(
                         text: 'Logout',
@@ -108,7 +119,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => Login(),
                               ),
-                              (route) => false);
+                                  (route) => false);
                         },
                       ),
                     ],
@@ -143,7 +154,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -215,9 +226,14 @@ class NavigationDrawerWidget extends StatelessWidget {
         );
         break;
       case 1:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Department(),
+        ));
+        break;
+      case 2:
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => Profile(),
+            builder: (context) => EditProfile(Name: name,),
           ),
         );
         break;
@@ -225,13 +241,6 @@ class NavigationDrawerWidget extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ChangePassword(),
-          ),
-        );
-        break;
-      case 4:
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => Department(),
           ),
         );
         break;

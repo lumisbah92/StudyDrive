@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:study_drive/constants.dart';
+import 'package:study_drive/pages/Signup/VerifyEmail.dart';
 import 'package:study_drive/pages/forgot_password.dart';
 import 'package:study_drive/pages/Signup/signup.dart';
-import 'package:study_drive/pages/Navigation%20Drawer/page/dashboard.dart';
+import 'package:study_drive/pages/Navigation%20Drawer/page/DashBoard/dashboard.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
   final _formKey = GlobalKey<FormState>();
 
   var email = "";
@@ -26,7 +28,7 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  final storage  = new FlutterSecureStorage();
+  final storage = new FlutterSecureStorage();
 
   userLogin() async {
     try {
@@ -34,12 +36,22 @@ class _LoginState extends State<Login> {
           .signInWithEmailAndPassword(email: email, password: password);
       await storage.write(key: "uid", value: userCredential.user?.uid);
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Dashboard(),
-        ),
-      );
+      if (FirebaseAuth.instance.currentUser!.emailVerified) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dashboard(),
+          ),
+        );
+      }
+      else{
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VerifyEmail(),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print("No User Found for that Email");
@@ -172,8 +184,10 @@ class _LoginState extends State<Login> {
                             color: kPrimaryColor,
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.visibility,),
-                            onPressed: (){
+                            icon: Icon(
+                              Icons.visibility,
+                            ),
+                            onPressed: () {
                               setState(() {
                                 _secureText = !_secureText;
                               });
@@ -207,15 +221,12 @@ class _LoginState extends State<Login> {
                               onSurface: Colors.grey,
                               side: BorderSide(color: Colors.black, width: 1),
                               elevation: 20,
-                              minimumSize: Size(140,40),
+                              minimumSize: Size(140, 40),
                               shadowColor: Colors.teal,
                               shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      color: Colors.white,
-                                      width: 1
-                                  ),
-                                  borderRadius: BorderRadius.circular(30)
-                              ),
+                                  side:
+                                      BorderSide(color: Colors.white, width: 1),
+                                  borderRadius: BorderRadius.circular(30)),
                             ),
                             onPressed: () {
                               // Validate returns true if the form is valid, otherwise false.
@@ -272,7 +283,7 @@ class _LoginState extends State<Login> {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

@@ -1,17 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Profile extends StatefulWidget {
+class EditProfile extends StatefulWidget {
   String Name;
 
-  Profile({required this.Name});
+  EditProfile({required this.Name});
 
   @override
-  _ProfileState createState() => _ProfileState();
+  _EditProfileState createState() => _EditProfileState();
 }
 
-class _ProfileState extends State<Profile>{
+class _EditProfileState extends State<EditProfile> {
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
