@@ -233,7 +233,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       case 2:
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => EditProfile(Name: name,),
+            builder: (context) => EditProfile(),
           ),
         );
         break;

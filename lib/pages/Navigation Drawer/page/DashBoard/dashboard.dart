@@ -44,11 +44,12 @@ class _DashboardState extends State<Dashboard> {
   final Stream<QuerySnapshot> UserList =
       FirebaseFirestore.instance.collection('UserList').snapshots();
 
-  Future<void> addUser(var Name) {
+  Future<void> addUser(Name, Email) {
     return students
         .add({
           'Post': post,
           'Name': Name,
+          'Email': Email,
           'Like Count': 0,
           'Likes': likes,
         })
@@ -265,9 +266,13 @@ class _DashboardState extends State<Dashboard> {
                                                                     post =
                                                                         postController
                                                                             .text;
-                                                                    addUser(userList[
-                                                                            i][
-                                                                        'Name']);
+                                                                    addUser(
+                                                                        userList[i]
+                                                                            [
+                                                                            'Name'],
+                                                                        userList[i]
+                                                                            [
+                                                                            'Email']);
                                                                     clearText();
                                                                   },
                                                                 );
@@ -336,7 +341,8 @@ class _DashboardState extends State<Dashboard> {
                                           setState(
                                             () {
                                               post = postController1.text;
-                                              addUser(userList[i]['Name']);
+                                              addUser(userList[i]['Name'],
+                                                  userList[i]['Email']);
                                               clearText();
                                             },
                                           );

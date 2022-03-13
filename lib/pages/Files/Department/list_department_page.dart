@@ -33,25 +33,33 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
     });
   }
 
-  final Stream<QuerySnapshot> studentsStream =
+  final Stream<QuerySnapshot> DepartmentStream =
   FirebaseFirestore.instance.collection('DepartmentList').snapshots();
 
-  /*// For Deleting User
-  CollectionReference students =
-      FirebaseFirestore.instance.collection('students');
-  Future<void> deleteUser(id) {
-    // print("User Deleted $id");
-    return students
+  // For Deleting User
+  CollectionReference Departmentref =
+      FirebaseFirestore.instance.collection('DepartmentList');
+  CollectionReference Courseref =
+  FirebaseFirestore.instance.collection('CoursesList');
+  Future<void> deleteCourseList(name) {
+    return Courseref
+        .doc(name)
+        .delete()
+        .then((value) => print('CourseList Deleted'))
+        .catchError((error) => print('Failed to Delete CourseList: $error'));
+  }
+  Future<void> deleteDepatment(id) {
+    return Departmentref
         .doc(id)
         .delete()
-        .then((value) => print('User Deleted'))
-        .catchError((error) => print('Failed to Delete user: $error'));
-  }*/
+        .then((value) => print('Department Deleted'))
+        .catchError((error) => print('Failed to Delete Department: $error'));
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: studentsStream,
+      stream: DepartmentStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           print('Something went Wrong');
@@ -166,21 +174,25 @@ class _ListDepartmentPageState extends State<ListDepartmentPage> {
                                       color: Colors.white,
                                       child: ListTile(
                                         trailing: (role == 'admin') ? SizedBox(
-                                          width: 30,
-                                          height: 85,
+                                          width: 50,
+                                          height: 50,
                                           child: PopupMenuButton(
                                             itemBuilder: (context) => [
                                               PopupMenuItem(
-                                                child: Text("Edit Semister"),
+                                                child: Text("Edit Department"),
                                               ),
                                               PopupMenuItem(
-                                                child: Text("Delete Semister"),
+                                                child: Text("Delete Department"),
+                                                onTap: (){
+                                                  deleteCourseList(storedocs[index]['Department Name']);
+                                                  deleteDepatment(storedocs[index]['id']);
+                                                },
                                               ),
                                             ],
                                           ),
                                         ) : null,
                                         title: Padding(
-                                          padding: const EdgeInsets.all(32.0),
+                                          padding: const EdgeInsets.all(20.0),
                                           child: Column(
                                             crossAxisAlignment:
                                             CrossAxisAlignment.start,

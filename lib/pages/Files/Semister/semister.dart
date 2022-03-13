@@ -150,9 +150,6 @@ class _SemisterState extends State<Semister> {
                                   PopupMenuItem(
                                     child: Text("Edit Semister"),
                                   ),
-                                  PopupMenuItem(
-                                    child: Text("Delete Semister"),
-                                  ),
                                 ],
                               ),
                             ) : null,

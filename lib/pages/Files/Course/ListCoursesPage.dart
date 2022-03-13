@@ -15,7 +15,6 @@ class ListCoursesPage extends StatefulWidget {
 }
 
 class _ListCoursesPageState extends State<ListCoursesPage> {
-
   String role = 'user';
 
   void initState() {
@@ -35,22 +34,26 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
     });
   }
 
-  /*// For Deleting User
-  CollectionReference students =
-      FirebaseFirestore.instance.collection('students');
-  Future<void> deleteUser(id) {
-    // print("User Deleted $id");
-    return students
+  CollectionReference Courseref =
+      FirebaseFirestore.instance.collection('CoursesList');
+
+  Future<void> deleteCourseList(id) {
+    return Courseref.doc(widget.department)
+        .collection(widget.semisters)
         .doc(id)
         .delete()
-        .then((value) => print('User Deleted'))
-        .catchError((error) => print('Failed to Delete user: $error'));
-  }*/
+        .then((value) => print('CourseList Deleted'))
+        .catchError((error) => print('Failed to Delete CourseList: $error'));
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('CoursesList').doc(widget.department.toString()).collection(widget.semisters).snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('CoursesList')
+          .doc(widget.department)
+          .collection(widget.semisters)
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           print('Something went Wrong');
@@ -68,17 +71,11 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
           a['id'] = document.id;
         }).toList();
 
-
-
         return Container(
-
-
           margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: SingleChildScrollView(
-
             scrollDirection: Axis.vertical,
             child: Column(
-
               children: [
                 Column(
                   children: [
@@ -91,25 +88,25 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
                           Text(
                             "Leading University",
                             style:
-                            TextStyle(fontSize: 28.0, color: Colors.white),
+                                TextStyle(fontSize: 28.0, color: Colors.white),
                           ),
                           Text(
                             widget.department,
                             style:
-                            TextStyle(fontSize: 25.0, color: Colors.white),
+                                TextStyle(fontSize: 25.0, color: Colors.white),
                           ),
                           Padding(
                             padding: EdgeInsets.all(2),
                           ),
                           Text(
                             widget.semisters,
-                            style:
-                            TextStyle(fontSize: 22.0, color: Colors.white54),
+                            style: TextStyle(
+                                fontSize: 22.0, color: Colors.white54),
                           ),
                           Text(
                             "Courses",
                             style:
-                            TextStyle(fontSize: 20.0, color: Colors.white),
+                                TextStyle(fontSize: 20.0, color: Colors.white),
                           ),
                         ],
                       ),
@@ -137,24 +134,32 @@ class _ListCoursesPageState extends State<ListCoursesPage> {
                         height: 30,
                         child: Icon(Icons.school, color: Colors.black87),
                       ),
-                      trailing: (role == 'admin') ? SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: PopupMenuButton(
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              child: Text("Edit Course"),
-                            ),
-                            PopupMenuItem(
-                              child: Text("Delete Course"),
-                            ),
-                          ],
-                        ),
-                      ) : null,
+                      trailing: (role == 'admin')
+                          ? SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: PopupMenuButton(
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    child: Text("Edit Course"),
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text("Delete Course"),
+                                    onTap: () {
+                                      deleteCourseList(storedocs[i]['id']);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            )
+                          : null,
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => showFiles(Course: storedocs[i]['Course']),
+                            builder: (context) => showFiles(
+                              Course: storedocs[i]['Course'],
+                              courseID: storedocs[i]['id'],
+                            ),
                           ),
                         );
                       },

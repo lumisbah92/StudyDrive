@@ -65,6 +65,9 @@ class _SignupState extends State<Signup> {
           'Email': email,
           'Password': password,
           'role': 'user',
+          'Department' : 'add',
+          'Semister' : 'add',
+          'About' : 'Write about you',
         })
             .then((value) => print('User Added'))
             .catchError((error) => print('Failed to Add User: $error'));
@@ -407,3 +410,4 @@ class _SignupState extends State<Signup> {
     );
   }
 }
+

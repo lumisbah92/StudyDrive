@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:study_drive/constants.dart';
 import 'package:study_drive/pages/Navigation%20Drawer/page/DashBoard/CommentPage.dart';
 import 'package:study_drive/pages/Navigation%20Drawer/page/profile.dart';
 
@@ -13,13 +12,43 @@ class PostList extends StatefulWidget {
 }
 
 class _PostListState extends State<PostList> {
+  String Name = "Misbah", Email = "Misbah@gmail.com";
+
+  void initState() {
+    super.initState();
+    _checkRole();
+  }
+
+  void _checkRole() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    final DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('UserList')
+        .doc(user?.uid)
+        .get();
+
+    setState(() {
+      Name = snap['Name'];
+      Email = snap['Email'];
+    });
+  }
+
   final Stream<QuerySnapshot> studentsStream =
       FirebaseFirestore.instance.collection('Posts').snapshots();
 
   final String currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
+  CollectionReference Postref = FirebaseFirestore.instance.collection('Posts');
+
+  Future<void> deletePost(id) {
+    return Postref.doc(id)
+        .delete()
+        .then((value) => print('Post Deleted'))
+        .catchError((error) => print('Failed to Delete Post: $error'));
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return StreamBuilder<QuerySnapshot>(
       stream: studentsStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -130,31 +159,49 @@ class _PostListState extends State<PostList> {
                                     ),
                                     Container(
                                       margin:
-                                          EdgeInsets.only(right: 10, top: 10),
-                                      child: PopupMenuButton(
-                                        icon: Icon(Icons.more_horiz),
-                                        itemBuilder: (context) => [
-                                          PopupMenuItem(
-                                            child: Text("Edit Post"),
-                                          ),
-                                          PopupMenuItem(
-                                            child: Text("Delete Post"),
-                                          ),
-                                        ],
-                                      ),
+                                          EdgeInsets.only(right: 0, top: 10),
+                                      child:
+                                          (FirebaseAuth.instance.currentUser
+                                                      ?.email ==
+                                                  storedocs[i]['Email'])
+                                              ? PopupMenuButton(
+                                                  icon: Icon(Icons.more_horiz),
+                                                  itemBuilder: (context) => [
+                                                    PopupMenuItem(
+                                                      child: Text("Edit Post"),
+                                                      onTap: (){
+                                                      }
+                                                    ),
+                                                    PopupMenuItem(
+                                                      child:
+                                                          Text("Delete Post"),
+                                                      onTap: () {
+                                                        deletePost(
+                                                            storedocs[i]['id']);
+                                                      },
+                                                    ),
+                                                  ],
+                                                )
+                                              : null,
                                     )
                                   ],
+                                ),
+                                Divider(
+                                  color: Colors.grey,
                                 ),
                                 Container(
                                   margin: EdgeInsets.all(10),
                                   padding: EdgeInsets.all(10),
                                   width: 350,
-                                  color: kPrimaryLightColor,
+                                  //color: kPrimaryLightColor,
                                   child: Text(
                                     storedocs[i]['Post'],
                                     style: TextStyle(
                                         fontSize: 16, color: Colors.black),
                                   ),
+                                ),
+                                Divider(
+                                  color: Colors.black,
                                 ),
                                 Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -242,7 +289,8 @@ class _PostListState extends State<PostList> {
                                                   builder: (context) =>
                                                       CommentPage(
                                                     postID: storedocs[i]['id'],
-                                                    Name: storedocs[i]['Name'],
+                                                    Name: Name,
+                                                    Email: Email,
                                                   ),
                                                 ));
                                               },
@@ -258,7 +306,8 @@ class _PostListState extends State<PostList> {
                                                   builder: (context) =>
                                                       CommentPage(
                                                     postID: storedocs[i]['id'],
-                                                    Name: storedocs[i]['Name'],
+                                                    Name: Name,
+                                                    Email: Email,
                                                   ),
                                                 ));
                                               },
